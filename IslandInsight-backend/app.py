@@ -16,7 +16,7 @@ def getTrendingNews():
 @app.route('/getnewsdetails/<int:newsId>')
 def getNewsDetails(newsId):
     # Construct the URL for the specific news article
-    news_url = f'https://UrlOftheNewsWebsite/news/{newsId}'
+    news_url = f'https://esana.com.lk/news/{newsId}'
     try:
         # Fetch the news details
         news_details = Scrape.scrapeNewsDetails(news_url)

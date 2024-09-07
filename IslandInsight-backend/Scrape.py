@@ -4,7 +4,7 @@ from flask import Flask
 
 app = Flask(__name__)
 def scrapeTrendingNews():
-    URL = 'URL of the news website'
+    URL = 'https://esana.com.lk/news'
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
