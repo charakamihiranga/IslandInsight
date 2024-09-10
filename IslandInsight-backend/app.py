@@ -1,14 +1,14 @@
-from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask,jsonify
+from flask import Flask, jsonify
 import Scrape
-import sys
-import io
-
 from util import AppUtil
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
 app = Flask(__name__)
+
+@app.route('/startfetching', methods=['GET'])
+def startFetching():
+    Scrape.scrapeTrendingNews()  # Start fetching the news
+    AppUtil.schedule_scrape()  # Reschedule the scraping job
+    return jsonify({'message': 'Fetching started'})
 
 @app.route('/getnewsdetails', defaults={'newsId': 0}, methods=['GET'])
 @app.route('/getnewsdetails/<int:newsId>')
@@ -22,8 +22,8 @@ def getNewsDetails(newsId):
     except Exception as e:
         return jsonify({'error': str(e)}), 500  # Return an error message if something goes wrong
 
-if __name__ == '__main__':
-    #start the scheduler
-    AppUtil.schedule_scrape()
-    app.run(debug=True)
 
+# Call the scrapeTrendingNews when the application starts
+if __name__ == '__main__':
+    print("Starting the Flask app and scraping trending news")
+    app.run(debug=True)

@@ -48,7 +48,6 @@ def scrapeTrendingNews():
         })
 
     NewsModel.saveScrapedEsanaNews(news_items)
-    return news_items
 
 
 def scrapeNewsDetails(url):
