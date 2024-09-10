@@ -1,6 +1,12 @@
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask
+from sqlalchemy import func
+
+from model.NewsModel import NewsModel
+from util import AppUtil
 
 app = Flask(__name__)
 def scrapeTrendingNews():
@@ -30,15 +36,18 @@ def scrapeTrendingNews():
         link = title_tag['href'] if title_tag else "No link"
 
         date_tag = article.find('ul', class_='list-inline').find('a')
-        date = date_tag.text.strip() if date_tag else "No date"
+        time = date_tag.text.strip() if date_tag else "No date"
 
         news_items.append({
+            'id': AppUtil.splitId(link),
             'title': title,
             'link': link,
             'imgLink': imgLink,
-            'date': date
+            'date': datetime.now().isoformat(),
+            'time': time
         })
 
+    NewsModel.saveScrapedEsanaNews(news_items)
     return news_items
 
 
@@ -71,4 +80,6 @@ def scrapeNewsDetails(url):
         'image_link': image_link,
         'post_content': post_content
     }
+
+
 
