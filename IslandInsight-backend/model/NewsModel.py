@@ -7,7 +7,7 @@ from util import AppUtil
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate('static/serviceAccountKey.json')
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'fbase db url here'
+    'databaseURL': 'firebase realtime database url'
 })
 
 
@@ -33,7 +33,7 @@ class NewsModel():
             db.commit()
 
             # After committing to the local DB, update Firebase
-            NewsModel.updateFirebaseDB(news_items)
+            NewsModel.updateFirebaseDB(news_items,"esana")
 
         except Exception as e:
             print(f"Failed to save news. Rolling back. Error: {e}")
@@ -54,7 +54,7 @@ class NewsModel():
             db.close()
 
     @staticmethod
-    def updateFirebaseDB(news_items):
+    def updateFirebaseDB(news_items, agency):
         # Update Firebase Realtime Database with the latest news items
         try:
             # Reference to the 'news' node in Firebase Realtime Database
@@ -67,7 +67,9 @@ class NewsModel():
                     'link': item['link'],
                     'imgLink': item['imgLink'],
                     'date': item['date'],
-                    'time': item['time']
+                    'time': item['time'],
+                    'agency': agency,
+                    'agencyLogo': AppUtil.getAgencyLogo(agency)
                 })
 
             print("Firebase database updated successfully.")

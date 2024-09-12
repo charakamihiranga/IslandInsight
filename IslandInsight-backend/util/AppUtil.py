@@ -16,3 +16,9 @@ def schedule_scrape():
         print(f"Failed to start scheduler. Error: {e}")
 
 
+def getAgencyLogo(agency):
+    # Return the logo URL based on the agency name
+    if agency == 'esana':
+        return 'https://esana.com.lk/assets/img/esena-logo.webp'
+    else:
+        return 'https://via.placeholder.com/150'  # Placeholder image URL

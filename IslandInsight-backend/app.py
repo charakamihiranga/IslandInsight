@@ -4,11 +4,12 @@ from util import AppUtil
 
 app = Flask(__name__)
 
-@app.route('/startfetching', methods=['GET'])
+@app.route('/startfetching', methods=['POST'])
 def startFetching():
+    return jsonify({'message': 'Fetching started...'})
     Scrape.scrapeTrendingNews()  # Start fetching the news
     AppUtil.schedule_scrape()  # Reschedule the scraping job
-    return jsonify({'message': 'Fetching started'})
+    return jsonify({'message': 'First fetch done and scheduled'})
 
 @app.route('/getnewsdetails', defaults={'newsId': 0}, methods=['GET'])
 @app.route('/getnewsdetails/<int:newsId>')
