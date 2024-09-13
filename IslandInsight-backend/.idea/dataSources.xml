@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="islandInsight@localhost" uuid="f9c63d95-7d8d-49f0-8ba2-6db90556c689">
+    <data-source source="LOCAL" name="islandinsight@localhost" uuid="0714a3e7-4558-4cc0-b840-9f2ec899a5e2">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/islandInsight</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/islandinsight</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

@@ -51,6 +51,7 @@ def scrapeTrendingNews():
 
 
 def scrapeNewsDetails(url):
+    print(f"Scraping news details from: {url}")
     # Fetch the HTML content from the URL
     response = requests.get(url)
     response.raise_for_status() # Raise an exception for bad responses
