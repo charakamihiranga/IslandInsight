@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -78,6 +79,39 @@
   font-style: italic;
 }
 
+ /* Sinhala fonts  */
+
+.abhaya-libre-regular {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.abhaya-libre-medium {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.abhaya-libre-semibold {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.abhaya-libre-bold {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.abhaya-libre-extrabold {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+
 .loader-icon {
   width: 50px;
   height: 50px;
@@ -92,4 +126,34 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+
+
+/* /////////////////////////////// */
+
+@media screen and (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr; /* Stack the image and content vertically */
+    height: auto; /* Let the card adapt height */
+  }
+  
+  .container img {
+    width: 100%;
+    height: auto;
+  }
+
+  .container div {
+    width: 100%;
+    padding: 1rem; /* Add padding for mobile readability */
+  }
+
+  .abhaya-libre-bold {
+    font-size: 1.25rem; /* Adjust the title font size for mobile */
+  }
+
+  .abhaya-libre-regular {
+    font-size: 1rem; /* Adjust the text size for better readability */
+  }
 }
