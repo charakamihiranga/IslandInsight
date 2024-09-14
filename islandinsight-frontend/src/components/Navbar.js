@@ -10,7 +10,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-b border-gray-200 py-4 md:py-6 sticky top-0 left-0 z-50 shadow-md">
-      <div className="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8 xl:px-[195px]">
+      <div className="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8 xl:px-[195px] relative">
         <a href="#" className="text-red-600 font-Pacifico text-2xl">
           Island Insight
         </a>
@@ -29,7 +29,7 @@ const Navbar = () => {
             LOGIN
           </button>
           <button
-            className={`md:hidden text-gray-700 hover:text-red-600 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}
+            className={`md:hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-red-600 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}
             onClick={toggleMenu}
           >
             <svg
@@ -49,13 +49,13 @@ const Navbar = () => {
           </button>
         </div>
       </div>
-      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-white border-t border-gray-200 transition-transform duration-500 ease-in-out transform ${isOpen ? 'translate-y-5 opacity-100' : '-translate-y-full opacity-0'}`}>
+      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-white border-t border-gray-200 transition-transform duration-500 ease-in-out transform ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'} w-full`}>
         <div className="flex flex-col space-y-4 py-5 px-4 sm:px-6 lg:px-8">
           <a href="#" className="text-gray-700 hover:text-red-600">Latest</a>
           <a href="#" className="text-gray-700 hover:text-red-600">Business</a>
           <a href="#" className="text-gray-700 hover:text-red-600">Technology</a>
           <a href="#" className="text-gray-700 hover:text-red-600">Sport</a>
-          <div className="flex space-x-4">
+          <div className="flex flex-col space-y-4">
             <button
               className="bg-black text-white text-xs roboto-bold py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-300"
               onClick={() => alert('Login')}
