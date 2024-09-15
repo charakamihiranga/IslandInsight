@@ -58,7 +58,7 @@ function LatestNewsCard() {
 
   return (
     <div
-      className="mx-4 sm:mx-8 md:mx-12 lg:mx-24 xl:mx-48 rounded-xl flex flex-col items-center justify-center p-4 my-10 transition-shadow duration-300 hover:shadow-lg cursor-pointer"
+      className="mx-4 sm:mx-8 md:mx-12 lg:mx-24 xl:mx-48 rounded-xl flex flex-col items-center justify-center p-4 my-10 transition-shadow duration-300 shadow-lg cursor-pointer"
       onClick={handleClick}
     >
       {latestNews ? (

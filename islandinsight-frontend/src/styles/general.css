@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .font-Pacifico {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
 }
 .roboto-thin {
   font-family: "Roboto", sans-serif;
@@ -79,7 +79,7 @@
   font-style: italic;
 }
 
- /* Sinhala fonts  */
+/* Sinhala fonts  */
 
 .abhaya-libre-regular {
   font-family: "Abhaya Libre", serif;
@@ -111,7 +111,6 @@
   font-style: normal;
 }
 
-
 .loader-icon {
   width: 30px;
   height: 30px;
@@ -124,21 +123,75 @@
 
 /* Keyframes for spinning animation */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+ /* skeleton-card styles */
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
+.skeleton-img {
+  height: 40vh;
+  width: 100%;
+  background: #e0e0e0;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-img::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  animation: loading 1.5s infinite;
+}
+
+.skeleton-text {
+  height: 1.5rem;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+.skeleton-text.short {
+  width: 60%;
+}
+.skeleton-text.long {
+  width: 80%;
+}
+
+@keyframes loading {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
 
 
-/* /////////////////////////////// */
+/* /////////////Latest News Card////////////////// */
 
 @media screen and (max-width: 768px) {
   .container {
-    grid-template-columns: 1fr; /* Stack the image and content vertically */
-    height: auto; /* Let the card adapt height */
+    grid-template-columns: 1fr;
+    height: auto;
   }
-  
+
   .container img {
     width: 100%;
     height: auto;
@@ -146,14 +199,19 @@
 
   .container div {
     width: 100%;
-    padding: 1rem; /* Add padding for mobile readability */
+    padding: 1rem;
   }
 
   .abhaya-libre-bold {
-    font-size: 1.25rem; /* Adjust the title font size for mobile */
+    font-size: 1.25rem;
+
+    .abhaya-libre-regular {
+      font-size: 1rem;
+    }
   }
 
-  .abhaya-libre-regular {
-    font-size: 1rem; /* Adjust the text size for better readability */
+  .news-card img.agency-logo {
+    height: 1rem;
+    width: 2.5rem;
   }
 }
