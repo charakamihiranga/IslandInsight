@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  ref,
-  onValue,
-  query,
-  limitToLast,
-  orderByKey,
-} from "firebase/database";
+import { ref, onValue, query, limitToLast, orderByKey } from "firebase/database";
 import { db } from "../configs/firebaseConfig";
 import "./../styles/general.css";
 
@@ -15,7 +9,8 @@ function LatestNewsCard() {
   useEffect(() => {
     const newsRef = ref(db, "news");
     const latestNewsQuery = query(newsRef, orderByKey(), limitToLast(1));
-    onValue(
+
+    const unsubscribe = onValue(
       latestNewsQuery,
       (snapshot) => {
         const data = snapshot.val();
@@ -26,10 +21,13 @@ function LatestNewsCard() {
           setLatestNews(null);
         }
       },
-      {
-        onlyOnce: true,
+      (error) => {
+        console.error("Error fetching latest news:", error);
       }
     );
+
+    // Cleanup the listener on component unmount
+    return () => unsubscribe();
   }, []);
 
   const getPublishedTime = (dateTime) => {
@@ -60,7 +58,7 @@ function LatestNewsCard() {
 
   return (
     <div
-      className="bg-[#d9d9d9] mx-4 sm:mx-8 md:mx-12 lg:mx-24 xl:mx-48 rounded-xl flex flex-col items-center justify-center p-4 my-10 transition-shadow duration-300 hover:shadow-lg cursor-pointer"
+      className="mx-4 sm:mx-8 md:mx-12 lg:mx-24 xl:mx-48 rounded-xl flex flex-col items-center justify-center p-4 my-10 transition-shadow duration-300 hover:shadow-lg cursor-pointer"
       onClick={handleClick}
     >
       {latestNews ? (
