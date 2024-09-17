@@ -131,7 +131,7 @@
   }
 }
 
- /* skeleton-card styles */
+/* skeleton-card styles */
 .skeleton-card {
   display: flex;
   flex-direction: column;
@@ -144,7 +144,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
 .skeleton-img {
   height: 40vh;
   width: 100%;
@@ -155,7 +154,7 @@
 }
 
 .skeleton-img::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -179,10 +178,13 @@
 }
 
 @keyframes loading {
-  0% { left: -100%; }
-  100% { left: 100%; }
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }
-
 
 /* /////////////Latest News Card////////////////// */
 
@@ -215,3 +217,36 @@
     width: 2.5rem;
   }
 }
+
+
+/* popup pane animations */
+@keyframes zoom-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+
+.zoom-in {
+  animation: zoom-in 0.3s ease-out;
+}
+
+.zoom-out {
+  animation: zoom-out 0.3s ease-in;
+}
+
