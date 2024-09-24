@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
-import './../styles/general.css';
-import LoginPane from './LoginPane';
+import React, { useState } from "react";
+import "./../styles/general.css";
+import LoginPane from "./LoginPane";
+import SignUpPane from "./SignUpPane";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showLoginPane, setShowLoginPane] = useState(false); 
+  const [showLoginPane, setShowLoginPane] = useState(false);
+  const [showSignUpPane, setShowSignUpPane] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const toggleLoginPane = () => {
-    setShowLoginPane(!showLoginPane); 
+    setShowSignUpPane(false);
+    setShowLoginPane(!showLoginPane);
+  };
+
+  const openSignUpPane = () => {
+    setShowSignUpPane(true);
+    setShowLoginPane(false);
+  };
+
+  const closePanes = () => {
+    setShowLoginPane(false);
+    setShowSignUpPane(false);
   };
 
   return (
@@ -22,23 +35,31 @@ const Navbar = () => {
             Island Insight
           </a>
           <div className="hidden md:flex border border-[#B4A8A8] h-5 ml-6"></div>
-          <div className="hidden md:flex space-x-12 ml-6 justify-start flex-grow lg:ml-12 xl:ml-[56px]">
-            <a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Latest</a>
-            <a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Business</a>
-            <a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Technology</a>
-            <a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Sport</a>
-          
-          </div>
+          <ul className="hidden md:flex space-x-12 ml-6 justify-start flex-grow lg:ml-12 xl:ml-[56px]">
+            <li>
+              <a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Latest</a>
+            </li>
+            <li>
+              <a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Business</a>
+            </li>
+            <li>
+              <a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Technology</a>
+            </li>
+            <li>
+              <a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Sport</a>
+            </li>
+          </ul>
           <div className="flex space-x-4">
             <button
               className="hidden md:block bg-black text-white text-xs roboto-bold py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-300"
-              onClick={toggleLoginPane} 
+              onClick={toggleLoginPane}
             >
               LOGIN
             </button>
             <button
-              className={`md:hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-red-600 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}
+              className={`md:hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-red-600 transition-transform duration-300`}
               onClick={toggleMenu}
+              aria-expanded={isOpen}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +78,11 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-        <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-white border-t border-gray-200 transition-transform duration-500 ease-in-out transform ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'} w-full`}>
+        <div
+          className={`md:hidden ${isOpen ? "block" : "hidden"} bg-white border-t border-gray-200 transition-transform duration-500 ease-in-out transform ${
+            isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+          } w-full`}
+        >
           <div className="flex flex-col space-y-4 py-5 px-4 sm:px-6 lg:px-8">
             <a href="#" className="text-gray-700 hover:text-red-600">Latest</a>
             <a href="#" className="text-gray-700 hover:text-red-600">Business</a>
@@ -66,13 +91,13 @@ const Navbar = () => {
             <div className="flex flex-col space-y-4">
               <button
                 className="bg-black text-white text-xs roboto-bold py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-300"
-                onClick={toggleLoginPane} 
+                onClick={toggleLoginPane}
               >
                 LOGIN
               </button>
               <button
                 className="bg-gray-300 text-black text-xs roboto-bold py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors duration-300"
-                onClick={() => alert('Signup')}
+                onClick={openSignUpPane}
               >
                 SIGNUP
               </button>
@@ -80,8 +105,9 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
-      <LoginPane isOpen={showLoginPane} onClose={toggleLoginPane} />
+      {/* Pane components */}
+      <LoginPane isOpen={showLoginPane} onClose={toggleLoginPane} openSignUpPane={openSignUpPane} />
+      <SignUpPane isOpen={showSignUpPane} onClose={closePanes} />
     </>
   );
 };

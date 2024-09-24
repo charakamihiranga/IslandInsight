@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "./../styles/general.css";
+import './../styles/general.css';
 import closeIcon from "./../assets/Close.png";
 import eyeIcon from "./../assets/eye.png";
+import appleLogo from "./../assets/Apple Logo.png";
+import facebookLogo from "./../assets/Facebook.png";
+import googleLogo from "./../assets/Google.png";
 
-const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
+const SignUpPane = ({ isOpen, onClose }) => {
   const [closing, setClosing] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -54,21 +57,25 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
             Island Insight
           </h1>
           <div className="flex items-center mt-2">
-            <div className="w-24 h-0.5 bg-[#E51B21]"></div>
+            <div className="w-20 h-0.5 bg-[#E51B21]"></div>
             <div className="ml-4 font-roboto font-bold text-xs text-gray-700">
-              Login form
+              Create account
             </div>
           </div>
-          <div>
+          <div className="text-center">
             <h3 className="roboto-bold mt-8">
-              Your fastest, most trusted source for News
+              Join Island Insights today!
             </h3>
-            <p className="roboto-bold text-xs text-gray-600">
-              Login to stay ahead
+            <p className="roboto-bold text-[12px] text-gray-600 mx-4">
+              Stay informed, share your voice, and engage with your community.
             </p>
           </div>
         </div>
         <div className="display-block mt-8 ">
+          <p className="text-xs roboto-bold mt-2 text-gray-700 ml-10">
+            Name
+          </p>
+          <input className="w-[96%] h-10 mt-2 ml-3 rounded-3xl border-none bg-[#d9d9d9] pl-4" />
           <p className="text-xs roboto-bold mt-2 text-gray-700 ml-10">
             Email or phone number
           </p>
@@ -89,31 +96,47 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
               onMouseUp={handleMouseUp}
             />
           </div>
-          <div className="flex justify-end">
-            <p className="text-[10px] roboto-medium text-gray-700 cursor-pointer mt-2 hover:underline mr-6">
-              Forgot password?
-            </p>
+          <p className="text-xs mt-4 roboto-bold text-gray-700 ml-10">
+            Confirm Password
+          </p>
+          <div className="relative w-[96%] mt-2 ml-3">
+            <input
+              className="w-full h-10 rounded-3xl border-none bg-[#d9d9d9] pl-4 pr-10"
+              type={passwordVisible ? "text" : "password"}
+            />
+            <img
+              src={eyeIcon}
+              alt="Toggle visibility"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer h-4 mr-2"
+              onMouseDown={handleMouseDown}
+              onMouseUp={handleMouseUp}
+            />
           </div>
-          <button className="w-full bg-[#E51B21] text-white roboto-bold text-xs p-2.5 rounded-3xl mt-4 cursor-pointer hover:bg-[#d91c27] hover:shadow-lg transition duration-300 ease-in-out">
-            LOGIN
+          <button className="w-[96%] ml-3 mt-6 bg-[#E51B21] text-white roboto-bold text-xs p-2.5 rounded-3xl cursor-pointer hover:bg-[#d91c27] hover:shadow-lg transition duration-300 ease-in-out">
+            NEXT
           </button>
-          <div className="mt-6 flex">
-            <div className="w-[8vw] mt-2 h-[1.5px] bg-[#716868]"></div>
+          <div className="mt-6 flex items-center justify-center">
+            <div className="w-[28%] mt-2 h-[1.5px] bg-[#716868]"></div>
             <p className="roboto-bold text-xs text-gray-700 mx-3">
-              {" "}
-              To create an account
+              Or continue with
             </p>
-            <div className="w-[8vw] mt-2 h-[1.5px] bg-[#716868]"></div>
+            <div className="w-[28%] mt-2 h-[1.5px] bg-[#716868]"></div>
           </div>
-          <button className="w-full bg-[#D9D9D9] text-[#000] mb-4 roboto-bold text-xs p-2.5 rounded-3xl mt-4 cursor-pointer hover:bg-[#B0B0B0] hover:shadow-lg transition duration-300 ease-in-out"
-                  onClick={openSignUpPane}
-          >
-            SIGNUP
-          </button>
+          <div className="flex justify-around mt-6 mx-8">
+            <button className="bg-[#d9d9d9] rounded-full p-2 hover:bg-[#d0d0d0] transition duration-300 ease-in-out">
+              <img src={facebookLogo} alt="Facebook" className="h-6 w-6" />
+            </button>
+            <button className="bg-[#d9d9d9] rounded-full p-2 hover:bg-[#d0d0d0] transition duration-300 ease-in-out">
+              <img src={googleLogo} alt="Google" className="h-6 w-6" />
+            </button>
+            <button className="bg-[#d9d9d9] rounded-full p-2 hover:bg-[#d0d0d0] transition duration-300 ease-in-out">
+              <img src={appleLogo} alt="Apple" className="h-6 w-6" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default LoginPane;
+export default SignUpPane;
