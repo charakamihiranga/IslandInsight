@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ref, onValue, query, limitToLast, orderByKey } from "firebase/database";
 import { db } from "../configs/firebaseConfig";
-import "./../styles/general.css";
+import './../assets/styles/general.css';
 
 function LatestNewsCard() {
   const [latestNews, setLatestNews] = useState(null);

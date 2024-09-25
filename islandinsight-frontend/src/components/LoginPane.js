@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./../styles/general.css";
+import './../assets/styles/general.css';
 import closeIcon from "./../assets/Close.png";
 import eyeIcon from "./../assets/eye.png";
 
