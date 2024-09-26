@@ -6,6 +6,7 @@ import eyeIcon from "./../assets/eye.png";
 import appleLogo from "./../assets/Apple Logo.png";
 import facebookLogo from "./../assets/Facebook.png";
 import googleLogo from "./../assets/Google.png";
+import './../assets/styles/general.css';
 
 const SignUpPane = ({ isOpen, onClose }) => {
   const { signup, signInWithGoogle, signInWithFacebook, signInWithApple } = useAuth();

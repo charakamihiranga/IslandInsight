@@ -1,7 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { doc, setDoc, getDoc } from "firebase/firestore"; // Import Firestore methods
+import { doc, setDoc, getDoc } from "firebase/firestore"; // Firestore methods
 import { fireStore } from '../configs/firebaseConfig'; 
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signOut } from "firebase/auth"; // Import signOut
+import { 
+  createUserWithEmailAndPassword, 
+  onAuthStateChanged, 
+  sendEmailVerification, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  FacebookAuthProvider, 
+  OAuthProvider, 
+  signOut 
+} from "firebase/auth"; // Firebase methods
 import { auth } from "../configs/firebaseConfig";
 
 // Create a context for authentication
@@ -16,28 +25,29 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Signup function with user data saving to Firestore
+  // Signup function with Firestore data saving
   const signup = async (email, password, username) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // Save user data in Firestore
       await setDoc(doc(fireStore, "users", user.uid), {
         username: username,
         email: email,
         createdAt: new Date().toISOString(),
-        profilePicture: user.photoURL,  // Save profile picture (if available)
+        profilePicture: user.photoURL,  
       });
 
-      await sendEmailVerification(user);
-      setCurrentUser(user);  // Set the current user after signup
+      await sendEmailVerification(user);  // Send verification email
+      setCurrentUser(user);  // Set current user after signup
     } catch (error) {
       console.error("Error signing up: ", error);
       throw error;
     }
   };
 
-  // Sign in with Google
+  // Google SignIn method
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -46,6 +56,8 @@ export const AuthProvider = ({ children }) => {
 
       const userDocRef = doc(fireStore, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
+
+      // If user doesn't exist in Firestore, create a new entry
       if (!userSnapshot.exists()) {
         await setDoc(userDocRef, {
           username: user.displayName,
@@ -55,14 +67,14 @@ export const AuthProvider = ({ children }) => {
         });
       }
 
-      setCurrentUser(user);
+      setCurrentUser(user);  // Set current user after sign-in
     } catch (error) {
       console.error("Error signing in with Google: ", error);
       throw error;
     }
   };
 
-  // Sign in with Facebook
+  // Facebook SignIn method
   const signInWithFacebook = async () => {
     const provider = new FacebookAuthProvider();
     try {
@@ -71,6 +83,8 @@ export const AuthProvider = ({ children }) => {
 
       const userDocRef = doc(fireStore, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
+
+      // If user doesn't exist in Firestore, create a new entry
       if (!userSnapshot.exists()) {
         await setDoc(userDocRef, {
           username: user.displayName,
@@ -80,14 +94,14 @@ export const AuthProvider = ({ children }) => {
         });
       }
 
-      setCurrentUser(user);
+      setCurrentUser(user);  // Set current user after sign-in
     } catch (error) {
       console.error("Error signing in with Facebook: ", error);
       throw error;
     }
   };
 
-  // Sign in with Apple
+  // Apple SignIn method
   const signInWithApple = async () => {
     const provider = new OAuthProvider('apple.com');
     try {
@@ -96,16 +110,18 @@ export const AuthProvider = ({ children }) => {
 
       const userDocRef = doc(fireStore, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
+
+      // If user doesn't exist in Firestore, create a new entry
       if (!userSnapshot.exists()) {
         await setDoc(userDocRef, {
-          username: user.displayName,
+          username: user.displayName || "No",  // Apple doesn't always provide a displayName
           email: user.email,
           createdAt: new Date().toISOString(),
-          profilePicture: user.photoURL,
+          profilePicture: user.photoURL || "No",  // Default to empty if no photoURL
         });
       }
 
-      setCurrentUser(user);
+      setCurrentUser(user);  // Set current user after sign-in
     } catch (error) {
       console.error("Error signing in with Apple: ", error);
       throw error;
@@ -115,37 +131,37 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = async () => {
     try {
-      await signOut(auth); // Call Firebase signOut
-      setCurrentUser(null); // Update currentUser to null
+      await signOut(auth);  // Sign out the current user
+      setCurrentUser(null);  // Reset current user to null
     } catch (error) {
       console.error("Error logging out: ", error);
       throw error;
     }
   };
 
-  // Listen to user authentication state changes
+  // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      setLoading(false);  // Stop loading once the auth state is determined
+      setLoading(false);  // Loading is false once the auth state is determined
     });
 
-    return unsubscribe;  // Unsubscribe from the listener when the component unmounts
+    return unsubscribe;  // Unsubscribe on cleanup
   }, []);
 
-  // Context value to be provided to consuming components
+  // Auth context value
   const value = {
     currentUser,
     signup,
     signInWithGoogle,
     signInWithFacebook,
     signInWithApple,
-    logout, // Add logout function to context value
+    logout,  // Include the logout function
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}  {/* Render children only when loading is finished */}
+      {!loading && children}  {/* Render children only when not loading */}
     </AuthContext.Provider>
   );
 };

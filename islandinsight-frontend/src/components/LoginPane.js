@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './../assets/styles/general.css';
 import closeIcon from "./../assets/Close.png";
 import eyeIcon from "./../assets/eye.png";
+import './../assets/styles/general.css';
 
 const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
   const [closing, setClosing] = useState(false);

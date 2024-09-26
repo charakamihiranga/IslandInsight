@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext"; // Import your AuthContext
 import LoginPane from "./LoginPane";
 import SignUpPane from "./SignUpPane";
+import defaultUser from "./../assets/userProfile.png";
+import './../assets/styles/general.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,29 +57,11 @@ const Navbar = () => {
             {currentUser ? (
               <div className="relative hidden md:flex">
                 <img
-                  src={currentUser.photoURL || "/default-profile.png"}
+                  src={currentUser?.photoURL && currentUser.photoURL !== "No" ? currentUser.photoURL : defaultUser}
                   alt="User profile"
                   className="w-10 h-10 md:w-8 md:h-8 rounded-full transition-transform duration-200 hover:scale-110 cursor-pointer"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 />
-                {dropdownOpen && (
-                  <div className="absolute left-5 mt-8 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
-                    <div className="py-2">
-                      <div className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-                        {currentUser.displayName} {/* Display username */}
-                      </div>
-                      <div 
-                        className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                        onClick={handleLogout}
-                      >
-                        Logout
-                      </div>
-                      <div className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-                        Settings
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             ) : (
               <button
@@ -111,7 +95,7 @@ const Navbar = () => {
           </div>
         </div>
         <div
-          className={`md:hidden ${isOpen ? "block" : "hidden"} bg-white border-t border-gray-200 transition-transform duration-500 ease-in-out transform ${
+          className={`md:hidden ${isOpen ? "block" : "hidden"} bg-white border-t border-gray-200 mt-6 transition-transform duration-500 ease-in-out transform ${
             isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
           } w-full`}
         >
@@ -132,7 +116,7 @@ const Navbar = () => {
                   >
                     LOGOUT
                   </button>
-                </>
+                </>       
               ) : (
                 <>
                   <button
