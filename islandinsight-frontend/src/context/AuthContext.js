@@ -1,15 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { doc, setDoc, getDoc } from "firebase/firestore"; // Firestore methods
-import { fireStore } from '../configs/firebaseConfig'; 
-import { 
-  createUserWithEmailAndPassword, 
-  onAuthStateChanged, 
-  sendEmailVerification, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
-  FacebookAuthProvider, 
-  OAuthProvider, 
-  signOut 
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  sendEmailVerification,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  OAuthProvider,
+  signOut,
+  signInWithPopup,  // Add signInWithPopup for external sign-ins
 } from "firebase/auth"; // Firebase methods
 import { auth } from "../configs/firebaseConfig";
 
@@ -25,19 +23,11 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Signup function with Firestore data saving
+  // Signup function
   const signup = async (email, password, username) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // Save user data in Firestore
-      await setDoc(doc(fireStore, "users", user.uid), {
-        username: username,
-        email: email,
-        createdAt: new Date().toISOString(),
-        profilePicture: user.photoURL,  
-      });
 
       await sendEmailVerification(user);  // Send verification email
       setCurrentUser(user);  // Set current user after signup
@@ -47,25 +37,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Google SignIn method
+  // Google Sign-In method 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);  
       const user = result.user;
-
-      const userDocRef = doc(fireStore, "users", user.uid);
-      const userSnapshot = await getDoc(userDocRef);
-
-      // If user doesn't exist in Firestore, create a new entry
-      if (!userSnapshot.exists()) {
-        await setDoc(userDocRef, {
-          username: user.displayName,
-          email: user.email,
-          createdAt: new Date().toISOString(),
-          profilePicture: user.photoURL,
-        });
-      }
 
       setCurrentUser(user);  // Set current user after sign-in
     } catch (error) {
@@ -74,25 +51,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Facebook SignIn method
+  // Facebook Sign-In method
   const signInWithFacebook = async () => {
     const provider = new FacebookAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);  // Fixed to signInWithPopup
       const user = result.user;
-
-      const userDocRef = doc(fireStore, "users", user.uid);
-      const userSnapshot = await getDoc(userDocRef);
-
-      // If user doesn't exist in Firestore, create a new entry
-      if (!userSnapshot.exists()) {
-        await setDoc(userDocRef, {
-          username: user.displayName,
-          email: user.email,
-          createdAt: new Date().toISOString(),
-          profilePicture: user.photoURL,
-        });
-      }
 
       setCurrentUser(user);  // Set current user after sign-in
     } catch (error) {
@@ -101,25 +65,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Apple SignIn method
+  // Apple Sign-In method
   const signInWithApple = async () => {
     const provider = new OAuthProvider('apple.com');
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);  // Fixed to signInWithPopup
       const user = result.user;
-
-      const userDocRef = doc(fireStore, "users", user.uid);
-      const userSnapshot = await getDoc(userDocRef);
-
-      // If user doesn't exist in Firestore, create a new entry
-      if (!userSnapshot.exists()) {
-        await setDoc(userDocRef, {
-          username: user.displayName || "No",  // Apple doesn't always provide a displayName
-          email: user.email,
-          createdAt: new Date().toISOString(),
-          profilePicture: user.photoURL || "No",  // Default to empty if no photoURL
-        });
-      }
 
       setCurrentUser(user);  // Set current user after sign-in
     } catch (error) {

@@ -9,7 +9,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLoginPane, setShowLoginPane] = useState(false);
   const [showSignUpPane, setShowSignUpPane] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Access current user from AuthContext
   const { currentUser, logout } = useAuth(); // Ensure logout is available from context
@@ -35,7 +34,6 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await logout(); // Call logout function from AuthContext
-    setDropdownOpen(false); // Close dropdown after logout
   };
 
   return (
@@ -60,7 +58,6 @@ const Navbar = () => {
                   src={currentUser?.photoURL && currentUser.photoURL !== "No" ? currentUser.photoURL : defaultUser}
                   alt="User profile"
                   className="w-10 h-10 md:w-8 md:h-8 rounded-full transition-transform duration-200 hover:scale-110 cursor-pointer"
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
                 />
               </div>
             ) : (
@@ -107,7 +104,7 @@ const Navbar = () => {
             <div className="flex flex-col space-y-4">
               {currentUser ? (
                 <>
-                  <div className="text-gray-700 hover:text-red-600 cursor-pointer" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                  <div className="text-gray-700 hover:text-red-600 cursor-pointer">
                     My Profile
                   </div>
                   <button
