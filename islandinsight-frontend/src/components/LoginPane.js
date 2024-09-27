@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
-import './../assets/styles/general.css';
+import { useAuth } from "../context/AuthContext";
+import "./../assets/styles/general.css";
 import closeIcon from "./../assets/Close.png";
 import eyeIcon from "./../assets/eye.png";
-import './../assets/styles/general.css';
 
 const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
   const [closing, setClosing] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    try {
+      await login(email, password);
+      handleClose(); 
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const handleMouseDown = () => {
     setPasswordVisible(true);
@@ -24,8 +36,10 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
     setClosing(true);
     setTimeout(() => {
       onClose();
+      setEmail("");      // Clear email field
+      setPassword("");   // Clear password field
       setClosing(false);
-    }, 300);
+    }, 300); // Adjust the timeout based on the duration of your closing animation
   };
 
   if (!isOpen && !closing) return null;
@@ -73,7 +87,11 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
           <p className="text-xs roboto-bold mt-2 text-gray-700 ml-10">
             Email or phone number
           </p>
-          <input className="w-[96%] h-10 mt-2 ml-3 rounded-3xl border-none bg-[#d9d9d9] pl-4" />
+          <input
+            className="w-[96%] h-10 mt-2 ml-3 rounded-3xl border-none bg-[#d9d9d9] pl-4"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <p className="text-xs mt-4 roboto-bold text-gray-700 ml-10">
             Password
           </p>
@@ -81,6 +99,8 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
             <input
               className="w-full h-10 rounded-3xl border-none bg-[#d9d9d9] pl-4 pr-10"
               type={passwordVisible ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <img
               src={eyeIcon}
@@ -95,7 +115,10 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
               Forgot password?
             </p>
           </div>
-          <button className="w-full bg-[#E51B21] text-white roboto-bold text-xs p-2.5 rounded-3xl mt-4 cursor-pointer hover:bg-[#d91c27] hover:shadow-lg transition duration-300 ease-in-out">
+          <button
+            className="w-full bg-[#E51B21] text-white roboto-bold text-xs p-2.5 rounded-3xl mt-4 cursor-pointer hover:bg-[#d91c27] hover:shadow-lg transition duration-300 ease-in-out"
+            onClick={handleLogin}
+          >
             LOGIN
           </button>
           <div className="mt-6 flex">
@@ -106,8 +129,9 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
             </p>
             <div className="w-[8vw] mt-2 h-[1.5px] bg-[#716868]"></div>
           </div>
-          <button className="w-full bg-[#D9D9D9] text-[#000] mb-4 roboto-bold text-xs p-2.5 rounded-3xl mt-4 cursor-pointer hover:bg-[#B0B0B0] hover:shadow-lg transition duration-300 ease-in-out"
-                  onClick={openSignUpPane}
+          <button
+            className="w-full bg-[#D9D9D9] text-[#000] mb-4 roboto-bold text-xs p-2.5 rounded-3xl mt-4 cursor-pointer hover:bg-[#B0B0B0] hover:shadow-lg transition duration-300 ease-in-out"
+            onClick={openSignUpPane}
           >
             SIGNUP
           </button>
