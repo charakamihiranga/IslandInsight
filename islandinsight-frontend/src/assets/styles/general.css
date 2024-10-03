@@ -207,9 +207,9 @@
   .abhaya-libre-bold {
     font-size: 1.25rem;
 
-    .abhaya-libre-regular {
-      font-size: 1rem;
-    }
+  } 
+  .abhaya-libre-regular {
+    font-size: 1rem;
   }
 
   .news-card img.agency-logo {
