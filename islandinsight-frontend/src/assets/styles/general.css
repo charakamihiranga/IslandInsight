@@ -177,6 +177,13 @@
   width: 80%;
 }
 
+.grayLine {
+  border: none;
+  height: 1.5px;
+  background-color: #716868;
+}
+
+
 @keyframes loading {
   0% {
     left: -100%;
@@ -216,6 +223,17 @@
     height: 1rem;
     width: 2.5rem;
   }
+
+  .clockIcon, .cmtsIcon {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .popupAgencyLogo {
+    object-fit: cover;
+    width: 2.5rem !important;
+  } 
+
 }
 
 
@@ -250,3 +268,21 @@
   animation: zoom-out 0.3s ease-in;
 }
 
+ /* scrollbar styles  */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #716868; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #d9d9d9; 
+}
+
+/* Optional: Add hover effects */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a39f9f; 
+}

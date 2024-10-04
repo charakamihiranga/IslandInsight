@@ -48,20 +48,18 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           <img src={closeIcon} alt="Close" className="w-6 h-6" />
         </button>
 
-        <div className="absolute inset-0 top-12 px-[3vw] bg-[#d9d9d9] rounded-lg overflow-y-auto">
+        <div className="absolute inset-0 top-12 px-[3vw] mb-[3vh] bg-[#d9d9d9] rounded-lg overflow-y-auto">
           <div className="p-4">
             <img src={news.imgLink} className="w-full rounded-lg" alt="News" />
-            <h1 className="abhaya-libre-bold text-base sm:text-lg md:text-xl lg:text-2xl text-center pt-3">
+            <h1 className="abhaya-libre-bold text-base sm:text-lg md:text-xl lg:text-2xl text-center pt-4">
               {news.title}
             </h1>
           </div>
-          <div className="flex space-x-5 items-center mr-5 pb-2">
-            <div className="flex items-center space-x-1 ml-auto">
-              <img
-                src={clockIcon}
-                className="w-6"
-                alt="Clock Icon"
-              />
+
+          <div className="flex justify-between space-x-4 items-center mr-5 pb-2 news-metadata">
+            <div className="flex-grow" />
+            <div className="flex items-center space-x-1 ml-auto mr-3">
+              <img src={clockIcon} className="clockIcon w-6" alt="Clock Icon" />
               <p className="roboto-bold text-[#363434] text-xs sm:text-sm md:text-sm">
                 27m
               </p>
@@ -69,7 +67,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
             <div className="flex items-center space-x-1">
               <img
                 src={commentsIcon}
-                className="w-6"
+                className="cmtsIcon w-6"
                 alt="Comments Icon"
               />
               <p className="roboto-bold text-[#E51B21] text-xs sm:text-sm md:text-sm">
@@ -77,7 +75,34 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
               </p>
             </div>
           </div>
-          <div className="w-full h-[1px] sm:h-[1.5px] md:h-[1.5px] bg-[#716868]" />
+
+          <hr className="grayLine" />
+
+          <div>
+            <p className="abhaya-libre-regular text-xs sm:text-sm md:text-sm lg:text-base p-4 pt-6 text-justify pb-8">
+              {news.postContent}
+            </p>
+          </div>
+
+          <div className="flex justify-between items-center px-4 mb-0 sm:mb-0 md:mb-2">
+  <img
+    className="popupAgencyLogo h-4 object-cover"
+    src={news?.agencyLogo}
+    alt="Agency Logo"
+  />
+  <div className="flex justify-end items-center space-x-2">
+    <p className="text-[#E51B21] roboto-bold text-sm sm:text-xs md:text-sm">
+      {news?.publishedDate}
+    </p>
+    <p className="text-gray-500 text-sm sm:text-xs md:text-sm">|</p>
+    <p className="text-[#363434] roboto-bold text-sm sm:text-xs md:text-sm">
+      {news?.readTime} min read
+    </p>
+  </div>
+</div>
+
+
+          <hr className="grayLine" />
         </div>
       </div>
     </div>

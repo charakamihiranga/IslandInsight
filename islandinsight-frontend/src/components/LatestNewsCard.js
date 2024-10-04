@@ -82,7 +82,7 @@ function LatestNewsCard() {
             <h1 className="abhaya-libre-bold text-xl mb-4">
               {latestNews.title}
             </h1>
-            <p className="abhaya-libre-regular text-base text-gray-800 mb-4">
+            <p className="abhaya-libre-regular text-base text-gray-800 mb-4  text-justify">
               {latestNews.postContent
                 ? latestNews.postContent.split(" ").slice(0, 50).join(" ") + "..."
                 : "Content not available"}

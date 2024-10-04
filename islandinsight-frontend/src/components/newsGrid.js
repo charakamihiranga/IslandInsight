@@ -94,7 +94,15 @@ function NewsGrid() {
               <div
                 key={item.newsid}
                 className="news-card shadow-lg rounded-lg overflow-hidden transition duration-300 transform hover:scale-105 cursor-pointer"
-                onClick={() => handleCardClick(item)}
+                onClick={() => handleCardClick({
+                  newsid: item.newsid,
+                  title: item.title,
+                  publishedDate: item.date.replace(/-/g, "/").split(" ")[0],
+                  readTime: getReadTime(item.postContent),
+                  imgLink: item.imgLink,
+                  agencyLogo: item.agencyLogo,
+                  postContent: item.postContent
+                })}
               >
                 <img
                   src={item.imgLink}
