@@ -3,10 +3,16 @@ import "./../assets/styles/general.css";
 import closeIcon from "./../assets/Close.png";
 import clockIcon from "./../assets/clockIcon.png";
 import commentsIcon from "./../assets/comments.png";
+import likeIcon from "./../assets/likeIcon.png";
+import commentIcon from "./../assets/commentIcon.png";
+import shareIcon from "./../assets/shareIcon.png";
+import likedIcon from "./../assets/likedIcon.png";
 
 const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [visible, setVisible] = useState(false);
   const [closing, setClosing] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeAnimation, setLikeAnimation] = useState(false);
 
   // Handle opening delay
   useEffect(() => {
@@ -24,6 +30,15 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
       onClose();
       setClosing(false);
     }, 300);
+  };
+
+  // Handle like button clicked
+  const handleLikeClick = () => {
+    setLiked(!liked);
+    setLikeAnimation(true);
+    setTimeout(() => {
+      setLikeAnimation(false); // Reset animation state after animation duration
+    }, 500); // Match this duration with the CSS animation duration
   };
 
   if (!isOpen && !closing) return null;
@@ -85,24 +100,51 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           </div>
 
           <div className="flex justify-between items-center px-4 mb-0 sm:mb-0 md:mb-2">
-  <img
-    className="popupAgencyLogo h-4 object-cover"
-    src={news?.agencyLogo}
-    alt="Agency Logo"
-  />
-  <div className="flex justify-end items-center space-x-2">
-    <p className="text-[#E51B21] roboto-bold text-sm sm:text-xs md:text-sm">
-      {news?.publishedDate}
-    </p>
-    <p className="text-gray-500 text-sm sm:text-xs md:text-sm">|</p>
-    <p className="text-[#363434] roboto-bold text-sm sm:text-xs md:text-sm">
-      {news?.readTime} min read
-    </p>
-  </div>
-</div>
-
+            <img
+              className="popupAgencyLogo h-4 object-cover"
+              src={news?.agencyLogo}
+              alt="Agency Logo"
+            />
+            <div className="flex justify-end items-center space-x-2">
+              <p className="text-[#E51B21] roboto-bold text-sm sm:text-xs md:text-sm">
+                {news?.publishedDate}
+              </p>
+              <p className="text-gray-500 text-sm sm:text-xs md:text-sm">|</p>
+              <p className="text-[#363434] roboto-bold text-sm sm:text-xs md:text-sm">
+                {news?.readTime} min read
+              </p>
+            </div>
+          </div>
 
           <hr className="grayLine" />
+
+          <div className="flex justify-between roboto-medium text-base w-full my-2">
+            <button
+              className={`flex items-center justify-center w-full sm:w-1/3 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full ${
+                likeAnimation ? "animate-like" : ""
+              }`}
+              onClick={handleLikeClick}
+            >
+              <img
+                className="reaction h-7 pr-1"
+                alt="Like"
+                src={liked ? likedIcon : likeIcon}
+              />
+              <p className="hidden sm:block text-xs sm:text-sm">Like</p>
+            </button>
+            <button className="flex items-center justify-center w-full sm:w-1/3 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full">
+              <img
+                className="reaction h-7 pr-1"
+                alt="Comment"
+                src={commentIcon}
+              />
+              <p className="hidden sm:block text-xs sm:text-sm">Comment</p>
+            </button>
+            <button className="flex items-center justify-center w-full sm:w-1/3 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full">
+              <img className="reaction h-7 pr-1" alt="Share" src={shareIcon} />
+              <p className="hidden sm:block text-xs sm:text-sm">Share</p>
+            </button>
+          </div>
         </div>
       </div>
     </div>

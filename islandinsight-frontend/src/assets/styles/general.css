@@ -234,6 +234,11 @@
     width: 2.5rem !important;
   } 
 
+  .reaction {
+    object-fit: cover;
+    width: 2rem !important;
+  }
+
 }
 
 
@@ -267,6 +272,24 @@
 .zoom-out {
   animation: zoom-out 0.3s ease-in;
 }
+
+/* like button animation */
+@keyframes likeAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-like {
+  animation: likeAnimation 0.5s ease-in-out;
+}
+
 
  /* scrollbar styles  */
 ::-webkit-scrollbar {
