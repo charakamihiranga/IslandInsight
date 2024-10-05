@@ -239,6 +239,16 @@
     width: 2rem !important;
   }
 
+  .commentSectionIcon {
+    object-fit: cover;
+    width: 2rem !important;
+  }
+
+  .userPhoto, .sendIcon {
+    object-fit: cover;
+    width: 2rem !important;
+  }
+
 }
 
 

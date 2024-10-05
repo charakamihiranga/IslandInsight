@@ -4,15 +4,17 @@ import closeIcon from "./../assets/Close.png";
 import clockIcon from "./../assets/clockIcon.png";
 import commentsIcon from "./../assets/comments.png";
 import likeIcon from "./../assets/likeIcon.png";
-import commentIcon from "./../assets/commentIcon.png";
 import shareIcon from "./../assets/shareIcon.png";
 import likedIcon from "./../assets/likedIcon.png";
+import commentSectionIcon from "./../assets/comments.png";
+import sendIcon from "./../assets/send.png";
 
 const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [visible, setVisible] = useState(false);
   const [closing, setClosing] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeAnimation, setLikeAnimation] = useState(false);
+  const [comment, setComment] = useState("");
 
   // Handle opening delay
   useEffect(() => {
@@ -41,6 +43,16 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
     }, 500); // Match this duration with the CSS animation duration
   };
 
+  // Handle post comment
+  const handlePostComment = () => {
+    if (comment.trim()) {
+      alert(`Comment sent: ${comment}`);
+      setComment("");
+    } else {
+      alert("Please write a comment before sending.");
+    }
+  };
+
   if (!isOpen && !closing) return null;
 
   return (
@@ -52,7 +64,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
       }`}
     >
       <div
-        className={`bg-white p-4 sm:p-8 rounded-2xl w-full sm:w-[80vw] md:w-[60vw] lg:w-[48vw] h-[90vh] shadow-lg relative transition-transform transform duration-300 ease-in-out delay-100 ${
+        className={`bg-white p-4 sm:p-8 rounded-t-2xl w-full sm:w-[80vw] md:w-[60vw] lg:w-[48vw] h-[90vh] shadow-lg relative transition-transform transform duration-300 ease-in-out delay-100 ${
           visible && !closing ? "scale-100" : "scale-90"
         }`}
       >
@@ -63,7 +75,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           <img src={closeIcon} alt="Close" className="w-6 h-6" />
         </button>
 
-        <div className="absolute inset-0 top-12 px-[3vw] mb-[3vh] bg-[#d9d9d9] rounded-lg overflow-y-auto">
+        <div className="absolute inset-0 top-12 px-[3vw] mb-[10vh] bg-white rounded-lg overflow-y-auto overflow-x-hidden">
           <div className="p-4">
             <img src={news.imgLink} className="w-full rounded-lg" alt="News" />
             <h1 className="abhaya-libre-bold text-base sm:text-lg md:text-xl lg:text-2xl text-center pt-4">
@@ -94,7 +106,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           <hr className="grayLine" />
 
           <div>
-            <p className="abhaya-libre-regular text-xs sm:text-sm md:text-sm lg:text-base p-4 pt-6 text-justify pb-8">
+            <p className="abhaya-libre-regular text-xs sm:text-sm md:text-base lg:text-lg p-4 pt-6 text-justify pb-8">
               {news.postContent}
             </p>
           </div>
@@ -120,7 +132,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
 
           <div className="flex justify-between roboto-medium text-base w-full my-2">
             <button
-              className={`flex items-center justify-center w-full sm:w-1/3 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full ${
+              className={`flex items-center justify-center w-full sm:w-1/2 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full ${
                 likeAnimation ? "animate-like" : ""
               }`}
               onClick={handleLikeClick}
@@ -130,21 +142,52 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
                 alt="Like"
                 src={liked ? likedIcon : likeIcon}
               />
-              <p className="hidden sm:block text-xs sm:text-sm">Like</p>
+              <p className=" sm:block text-xs sm:text-sm">Like</p>
             </button>
-            <button className="flex items-center justify-center w-full sm:w-1/3 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full">
-              <img
-                className="reaction h-7 pr-1"
-                alt="Comment"
-                src={commentIcon}
-              />
-              <p className="hidden sm:block text-xs sm:text-sm">Comment</p>
-            </button>
-            <button className="flex items-center justify-center w-full sm:w-1/3 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full">
+            <button className="flex items-center justify-center w-full sm:w-1/2 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full">
               <img className="reaction h-7 pr-1" alt="Share" src={shareIcon} />
-              <p className="hidden sm:block text-xs sm:text-sm">Share</p>
+              <p className=" sm:block text-xs sm:text-sm">Share</p>
             </button>
           </div>
+
+          <div className="flex items-center mt-4 space-x-2 px-2">
+            <img
+              className="commentSectionIcon h-9 "
+              alt="Comment Section"
+              src={commentSectionIcon}
+            />
+            <h2 className="roboto-bold text-base sm:text-sm md:text-lg lg:text-xl">
+              Voice of the People...
+            </h2>
+          </div>
+
+          <div 
+            className="commentSection w-full bg-[#d9d9d9] rounded-xl mt-2"
+          >
+            {/* Comment Section */}
+          </div>      
+        </div>
+
+        <div className="bg-[#E51B21] rounded-t-2xl w-full h-[9vh] absolute bottom-0 right-0 flex items-center justify-between px-6">
+          <img
+            className="userPhoto h-8 w-8 rounded-full mr-4"
+            alt="user"
+            src={user?.photoURL}
+          />
+          <input
+            type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)} // Update state on input change
+            className="commentInput flex-grow h-8 rounded-full bg-white pl-5 mr-4 roboto-regular text-sm focus:outline-none"
+            placeholder="Write your thoughts..."
+          />
+          <button onClick={handlePostComment}>
+            <img
+              className="sendIcon h-8 w-8 transition-transform duration-200 transform hover:scale-110"
+              alt="send"
+              src={sendIcon}
+            />
+          </button>
         </div>
       </div>
     </div>
