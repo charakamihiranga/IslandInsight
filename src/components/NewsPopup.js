@@ -8,6 +8,11 @@ import shareIcon from "./../assets/shareIcon.png";
 import likedIcon from "./../assets/likedIcon.png";
 import commentSectionIcon from "./../assets/comments.png";
 import sendIcon from "./../assets/send.png";
+import {
+  updateLikesInDb,
+  postCommentToDb,
+  checkIfLiked, // Import the function to check if the user liked
+} from "../configs/firestoreOperations";
 
 const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [visible, setVisible] = useState(false);
@@ -20,10 +25,17 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => setVisible(true), 100);
+      checkUserLiked(); // Check if the user liked the news when opening
     } else {
       setVisible(false);
     }
   }, [isOpen]);
+
+  // Function to check if the current user liked the news article
+  const checkUserLiked = async () => {
+    const isLiked = await checkIfLiked(news.newsid, user.uid); // Assuming this function returns true/false
+    setLiked(isLiked);
+  };
 
   // Handle close with animation
   const handleClose = () => {
@@ -35,18 +47,24 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   };
 
   // Handle like button clicked
-  const handleLikeClick = () => {
-    setLiked(!liked);
+  const handleLikeClick = async () => {
+    const newLikedStatus = !liked;
+    setLiked(newLikedStatus);
     setLikeAnimation(true);
+    await updateLikesInDb(news.newsid, newLikedStatus, user.uid);
     setTimeout(() => {
-      setLikeAnimation(false); // Reset animation state after animation duration
-    }, 500); // Match this duration with the CSS animation duration
+      setLikeAnimation(false);
+    }, 500);
   };
 
   // Handle post comment
-  const handlePostComment = () => {
+  const handlePostComment = async () => {
     if (comment.trim()) {
-      alert(`Comment sent: ${comment}`);
+      await postCommentToDb(news.id, {
+        userId: user.id,
+        comment,
+        timestamp: new Date(), // Use current date for timestamp
+      });
       setComment("");
     } else {
       alert("Please write a comment before sending.");
@@ -140,13 +158,13 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
               <img
                 className="reaction h-7 pr-1"
                 alt="Like"
-                src={liked ? likedIcon : likeIcon}
+                src={liked ? likedIcon : likeIcon} // Use liked state to determine icon
               />
-              <p className=" sm:block text-xs sm:text-sm">Like</p>
+              <p className="sm:block text-xs sm:text-sm">Like</p>
             </button>
             <button className="flex items-center justify-center w-full sm:w-1/2 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full">
               <img className="reaction h-7 pr-1" alt="Share" src={shareIcon} />
-              <p className=" sm:block text-xs sm:text-sm">Share</p>
+              <p className="sm:block text-xs sm:text-sm">Share</p>
             </button>
           </div>
 
@@ -161,11 +179,9 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
             </h2>
           </div>
 
-          <div 
-            className="commentSection w-full bg-[#d9d9d9] rounded-xl mt-2"
-          >
+          <div className="commentSection w-full bg-[#d9d9d9] rounded-xl mt-2">
             {/* Comment Section */}
-          </div>      
+          </div>
         </div>
 
         <div className="bg-[#E51B21] rounded-t-2xl w-full h-[9vh] absolute bottom-0 right-0 flex items-center justify-between px-6">
