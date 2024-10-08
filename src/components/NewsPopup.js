@@ -6,23 +6,50 @@ import commentsIcon from "./../assets/comments.png";
 import likeIcon from "./../assets/likeIcon.png";
 import shareIcon from "./../assets/shareIcon.png";
 import likedIcon from "./../assets/likedIcon.png";
-import commentSectionIcon from "./../assets/comments.png";
 import sendIcon from "./../assets/send.png";
+import commentHeaderIcon from "./../assets/userComments.png";
+import dProfile from "./../assets/profile.png";
 import {
   updateLikesInDb,
   postCommentToDb,
   checkIfLiked, // Import the function to check if the user liked
   listenToLikes,
+  listenToComments,
 } from "../configs/firestoreOperations";
 
 const NewsPopup = ({ isOpen, onClose, news, user }) => {
+  console.log("user: ", user);
+  console.log("news: ", news);
+
   const [visible, setVisible] = useState(false);
   const [closing, setClosing] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeAnimation, setLikeAnimation] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [comment, setComment] = useState("");
+  const [commentCount, setCommentCount] = useState(0);
+  const [comments, setComments] = useState([]);
 
+  // Function to get the time difference from the current time
+  const getTimeDifference = (timestamp) => {
+    if (!timestamp || !timestamp.seconds) {
+      return "unknown";
+    }
+
+    const now = new Date();
+    const commentTime = new Date(timestamp.seconds * 1000);
+    const diffInSeconds = Math.floor((now - commentTime) / 1000);
+
+    if (diffInSeconds < 60) {
+      return "just now";
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes}m`;
+    } else {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours}h`;
+    }
+  };
 
   // Handle opening delay
   useEffect(() => {
@@ -30,10 +57,20 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
       setTimeout(() => setVisible(true), 100);
       checkUserLiked(); // Check if the user liked the news when opening
       listenToLikesCount();
+      listenToCommentsSection();
     } else {
       setVisible(false);
     }
   }, [isOpen]);
+
+  // Listen to real-time updates to the comments
+  const listenToCommentsSection = () => {
+    const unsubscribe = listenToComments(news.newsid, (updatedComments) => {
+      setComments(updatedComments);
+      setCommentCount(updatedComments.length);
+    });
+    return () => unsubscribe();
+  };
 
   // Listen for real-time updates to the like count
   const listenToLikesCount = () => {
@@ -72,10 +109,11 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   // Handle post comment
   const handlePostComment = async () => {
     if (comment.trim()) {
-      await postCommentToDb(news.id, {
-        userId: user.id,
+      await postCommentToDb(news.newsid, {
+        userId: user.uid,
+        username: user.displayName || "User",
         comment,
-        timestamp: new Date(), // Use current date for timestamp
+        userPhoto: user.photoURL,
       });
       setComment("");
     } else {
@@ -86,14 +124,13 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const getFomattedPublishedTime = (time) => {
     // Split the time string into the number and the unit
     const [value, unit] = time.split(" ");
-  
+
     // Convert the full word ("hours" or "minutes") to its shortened form ("h" or "m")
     if (unit.startsWith("hour")) return `${value}h`;
     if (unit.startsWith("minute")) return `${value}m`;
-  
+
     return time; // If it's "Just now", return as is
   };
-  
 
   if (!isOpen && !closing) return null;
 
@@ -147,7 +184,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
                 alt="Comments Icon"
               />
               <p className="roboto-bold text-[#E51B21] text-xs sm:text-sm md:text-sm">
-                54
+                {commentCount}
               </p>
             </div>
           </div>
@@ -199,19 +236,65 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
             </button>
           </div>
 
-          <div className="flex items-center mt-4 space-x-2 px-2">
+          <div className="flex items-center mt-6 space-x-2 px-2">
             <img
               className="commentSectionIcon h-9 "
               alt="Comment Section"
-              src={commentSectionIcon}
+              src={commentHeaderIcon}
             />
-            <h2 className="roboto-bold text-base sm:text-sm md:text-lg lg:text-xl">
-              Voice of the People...
+            <h2 className="roboto-bold text-base sm:text-sm md:text-sm lg:text-lg">
+              Your Thoughts!
             </h2>
           </div>
 
-          <div className="commentSection w-full bg-[#d9d9d9] rounded-xl mt-2">
-            {/* Comment Section */}
+          <div className="commentSection w-full bg-white rounded-xl mt-4 p-2">
+            {comments.length === 0 ? (
+              <div className="w-full bg-[#d9d9d9] rounded-xl mt-2 p-4">
+                <p className="roboto-medium text-gray-600 text-sm">
+                  No comments yet. Be the first to comment!
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {comments.map((comment, index) => {
+                  const firstName = comment.username
+                    ? comment.username.split(" ")[0]
+                    : "User";
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-start space-x-3 p-2 w-full"
+                    >
+                      <img
+                        className="commentUserPhoto w-8 h-8 rounded-full object-cover"
+                        src={comment.userPhoto || dProfile}
+                        alt="User"
+                      />
+                      <div className="bg-gray-200 py-2 pb-4 px-4 sm:px-6 sm:py-3 rounded-xl w-full">
+                        <div className="flex justify-between items-start mb-1 w-full">
+                          <div className="flex flex-col">
+                            <p className="roboto-bold text-xs sm:text-sm text-gray-700 leading-tight sm:mb-1">
+                              <span className="block sm:hidden">
+                                {firstName}
+                              </span>
+                              <span className="hidden sm:block">
+                                {comment.username || "User"}
+                              </span>
+                            </p>
+                            <p className="roboto-medium text-sm sm:text-base text-gray-800 break-words leading-tight mt-1">
+                              {comment.comment}
+                            </p>
+                          </div>
+                          <p className="roboto-medium text-xs text-gray-500 whitespace-nowrap ml-4">
+                            {getTimeDifference(comment.timestamp)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 

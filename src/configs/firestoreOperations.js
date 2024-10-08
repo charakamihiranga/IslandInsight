@@ -1,4 +1,4 @@
-import { serverTimestamp } from "firebase/database";
+import { serverTimestamp } from "firebase/firestore";
 import { firestore } from "./firebaseConfig";
 import {
   doc,
@@ -85,8 +85,13 @@ export const listenToComments = (newsId, onUpdate) => {
     where("newsId", "==", newsId),
     orderBy("timestamp", "asc")
   );
+
   return onSnapshot(commentsRef, (snapshot) => {
-    const updatedComments = snapshot.docs.map((doc) => doc.data());
+    const updatedComments = snapshot.docs.map((doc) => ({
+      id: doc.id, 
+      ...doc.data()
+    }));
+
     onUpdate(updatedComments);
   });
 };

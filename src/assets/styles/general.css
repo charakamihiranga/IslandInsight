@@ -225,8 +225,8 @@
   }
 
   .clockIcon, .cmtsIcon {
+    object-fit: cover;
     width: 24px !important;
-    height: 24px !important;
   }
 
   .popupAgencyLogo {
@@ -252,6 +252,12 @@
   .likeCount{
     object-fit: cover;
     width:1.5rem !important;
+  }
+
+  .commentUserPhoto{
+    object-fit: cover;
+    width: 2rem !important;
+    padding-left: 0px;
   }
 
 }
