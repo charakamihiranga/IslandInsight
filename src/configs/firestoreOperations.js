@@ -15,14 +15,26 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 
+// listen for real-time updates on likes
+export const listenToLikes = (newsId, onUpdate) => {
+  const newsRef = doc(firestore, "likes", newsId);
+  return onSnapshot(newsRef, (doc) => {
+    if (doc.exists()) {
+      const data = doc.data();
+      onUpdate(data.likesCount || 0); 
+    } else {
+      onUpdate(0);
+    }
+  });
+};
+
 // Check if the user liked the news
 export const checkIfLiked = async (newsId, userId) => {
-  const docRef = doc(firestore, "news", newsId);
+  const docRef = doc(firestore, "likes", newsId);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
     const data = docSnap.data();
-    console.log("Likes Data:", data); // Debug: Log the likes data
     return data.likedByUsers ? data.likedByUsers.includes(userId) : false;
   } else {
     return false;
@@ -31,7 +43,7 @@ export const checkIfLiked = async (newsId, userId) => {
 
 //update likes in firebase
 export const updateLikesInDb = async (newsId, liked, userId) => {
-  const newsRef = doc(firestore, "news", newsId);
+  const newsRef = doc(firestore, "likes", newsId);
 
   // Check if the document exists
   const docSnapshot = await getDoc(newsRef);

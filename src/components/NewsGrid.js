@@ -101,7 +101,8 @@ function NewsGrid() {
                   readTime: getReadTime(item.postContent),
                   imgLink: item.imgLink,
                   agencyLogo: item.agencyLogo,
-                  postContent: item.postContent
+                  postContent: item.postContent,
+                  publishedTime : getPublishedTime(item.date)
                 })}
               >
                 <img

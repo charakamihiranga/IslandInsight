@@ -249,6 +249,11 @@
     width: 2rem !important;
   }
 
+  .likeCount{
+    object-fit: cover;
+    width:1.5rem !important;
+  }
+
 }
 
 

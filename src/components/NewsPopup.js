@@ -12,6 +12,7 @@ import {
   updateLikesInDb,
   postCommentToDb,
   checkIfLiked, // Import the function to check if the user liked
+  listenToLikes,
 } from "../configs/firestoreOperations";
 
 const NewsPopup = ({ isOpen, onClose, news, user }) => {
@@ -19,17 +20,28 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [closing, setClosing] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeAnimation, setLikeAnimation] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const [comment, setComment] = useState("");
+
 
   // Handle opening delay
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => setVisible(true), 100);
       checkUserLiked(); // Check if the user liked the news when opening
+      listenToLikesCount();
     } else {
       setVisible(false);
     }
   }, [isOpen]);
+
+  // Listen for real-time updates to the like count
+  const listenToLikesCount = () => {
+    const unsubscribe = listenToLikes(news.newsid, (updatedLikeCount) => {
+      setLikeCount(updatedLikeCount); // Update the like count when it changes
+    });
+    return () => unsubscribe();
+  };
 
   // Function to check if the current user liked the news article
   const checkUserLiked = async () => {
@@ -71,6 +83,18 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
     }
   };
 
+  const getFomattedPublishedTime = (time) => {
+    // Split the time string into the number and the unit
+    const [value, unit] = time.split(" ");
+  
+    // Convert the full word ("hours" or "minutes") to its shortened form ("h" or "m")
+    if (unit.startsWith("hour")) return `${value}h`;
+    if (unit.startsWith("minute")) return `${value}m`;
+  
+    return time; // If it's "Just now", return as is
+  };
+  
+
   if (!isOpen && !closing) return null;
 
   return (
@@ -102,11 +126,18 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           </div>
 
           <div className="flex justify-between space-x-4 items-center mr-5 pb-2 news-metadata">
+            <div className="flex items-center space-x-1 ml-auto mr-3">
+              <img src={likedIcon} className="likeCount w-6" alt="liked Icon" />
+              <p className="roboto-bold text-[#363434] text-xs sm:text-sm md:text-sm">
+                {likeCount}
+              </p>
+            </div>
+
             <div className="flex-grow" />
             <div className="flex items-center space-x-1 ml-auto mr-3">
               <img src={clockIcon} className="clockIcon w-6" alt="Clock Icon" />
               <p className="roboto-bold text-[#363434] text-xs sm:text-sm md:text-sm">
-                27m
+                {getFomattedPublishedTime(news?.publishedTime)}
               </p>
             </div>
             <div className="flex items-center space-x-1">
