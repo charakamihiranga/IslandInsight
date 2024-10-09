@@ -27,6 +27,27 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [commentCount, setCommentCount] = useState(0);
   const [comments, setComments] = useState([]);
 
+  // Handle share button clicked
+  const handleShareClick = async () => {
+    const shareMessage = `📢 ${news.title}\n\n${news.postContent}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: news.title,
+          text: shareMessage,
+        });
+      } else {
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?quote=${encodeURIComponent(
+          shareMessage
+        )}`;
+        window.open(shareUrl, "_blank");
+      }
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
+
   // Function to get the time difference from the current time
   const getTimeDifference = (timestamp) => {
     if (!timestamp || !timestamp.seconds) {
@@ -227,7 +248,10 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
               />
               <p className="sm:block text-xs sm:text-sm">Like</p>
             </button>
-            <button className="flex items-center justify-center w-full sm:w-1/2 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full">
+            <button
+              className="flex items-center justify-center w-full sm:w-1/2 px-3 py-2 transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg rounded-full"
+              onClick={handleShareClick}
+            >
               <img className="reaction h-7 pr-1" alt="Share" src={shareIcon} />
               <p className="sm:block text-xs sm:text-sm">Share</p>
             </button>
