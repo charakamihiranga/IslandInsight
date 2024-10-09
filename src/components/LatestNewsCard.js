@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { ref, onValue, query, limitToLast, orderByKey } from "firebase/database";
+import {
+  ref,
+  onValue,
+  query,
+  limitToLast,
+  orderByKey,
+  set,
+} from "firebase/database";
 import { db } from "../configs/firebaseConfig";
-import './../assets/styles/general.css';
+import "./../assets/styles/general.css";
+import { useAuth } from "../context/AuthContext";
+import NewsPopup from "./NewsPopup";
 
 function LatestNewsCard() {
   const [latestNews, setLatestNews] = useState(null);
+  const [selectedNews, setSelectedNews] = useState(null);
+  const [isNewsPopupOpen, setIsNewsPopupOpen] = useState(false);
+
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const newsRef = ref(db, "news");
@@ -50,19 +63,38 @@ function LatestNewsCard() {
     return Math.ceil(words.length / 200);
   };
 
-  const handleClick = () => {
-    if (latestNews) {
-      alert("Redirecting to news details page");
-    }
+  const getNewsId = (link) => {
+    return link.split("/")[1];
+  };
+
+  const handleClick = (latestNews) => {
+    setSelectedNews(latestNews);
+    setIsNewsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsNewsPopupOpen(false);
+    setSelectedNews(null);
   };
 
   return (
-    <div
-      className="mx-4 sm:mx-8 md:mx-12 lg:mx-24 xl:mx-48 rounded-xl flex flex-col items-center justify-center p-4 my-10 transition-shadow duration-300 shadow-lg cursor-pointer"
-      onClick={handleClick}
-    >
+    <div className="mx-4 sm:mx-8 md:mx-12 lg:mx-24 xl:mx-48 rounded-xl flex flex-col items-center justify-center p-4 my-10 transition-shadow duration-300 shadow-lg cursor-pointer">
       {latestNews ? (
-        <div className="flex flex-col md:flex-row items-stretch w-full max-w-[1200px] mx-auto">
+        <div
+          className="flex flex-col md:flex-row items-stretch w-full max-w-[1200px] mx-auto"
+          onClick={() =>
+            handleClick({
+              newsid: getNewsId(latestNews.link),
+              title: latestNews.title,
+              publishedDate: latestNews.date.replace(/-/g, "/").split(" ")[0],
+              readTime: getReadTime(latestNews.postContent),
+              imgLink: latestNews.imgLink,
+              agencyLogo: latestNews.agencyLogo,
+              postContent: latestNews.postContent,
+              publishedTime: getPublishedTime(latestNews.date),
+            })
+          }
+        >
           <img
             src={latestNews.imgLink}
             alt="Latest News"
@@ -84,7 +116,7 @@ function LatestNewsCard() {
             </h1>
             <p className="abhaya-libre-regular text-base text-gray-800 mb-4  text-justify">
               {latestNews.postContent
-                ? latestNews.postContent.split(" ").slice(0, 50).join(" ") + "..."
+                ? latestNews.postContent
                 : "Content not available"}
             </p>
             <div className="flex flex-row items-center space-x-1 text-xs">
@@ -97,6 +129,14 @@ function LatestNewsCard() {
               </p>
             </div>
           </div>
+          {isNewsPopupOpen && selectedNews && (
+            <NewsPopup
+              isOpen={isNewsPopupOpen}
+              onClose={handleClosePopup}
+              news={selectedNews}
+              user={currentUser}
+            />
+          )}
         </div>
       ) : (
         <div className="flex items-center justify-center w-full h-full">

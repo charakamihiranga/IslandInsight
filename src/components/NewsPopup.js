@@ -18,9 +18,6 @@ import {
 } from "../configs/firestoreOperations";
 
 const NewsPopup = ({ isOpen, onClose, news, user }) => {
-  console.log("user: ", user);
-  console.log("news: ", news);
-
   const [visible, setVisible] = useState(false);
   const [closing, setClosing] = useState(false);
   const [liked, setLiked] = useState(false);
