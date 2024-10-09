@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext"; // Import your AuthContext
 import LoginPane from "./LoginPane";
 import SignUpPane from "./SignUpPane";
 import defaultUser from "./../assets/userProfile.png";
+import { NavLink } from "react-router-dom"; // Import NavLink from react-router-dom
 import './../assets/styles/general.css';
 
 const Navbar = () => {
@@ -40,15 +41,51 @@ const Navbar = () => {
     <>
       <nav className="bg-white border-b border-gray-200 py-4 md:py-6 sticky top-0 left-0 z-50 shadow-md">
         <div className="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8 xl:px-[195px] relative">
-          <a href="#" className="text-red-600 font-Pacifico text-2xl">
+          <NavLink to="/" className="text-red-600 font-Pacifico text-2xl">
             Island Insight
-          </a>
+          </NavLink>
           <div className="hidden md:flex border border-[#B4A8A8] h-5 ml-6"></div>
           <ul className="hidden md:flex space-x-12 ml-6 justify-start flex-grow lg:ml-12 xl:ml-[56px]">
-            <li><a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Latest</a></li>
-            <li><a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Business</a></li>
-            <li><a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Technology</a></li>
-            <li><a href="#" className="text-gray-700 hover:text-red-600 roboto-medium">Sport</a></li>
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) => 
+                  `text-gray-700 hover:text-red-600 roboto-medium ${isActive ? "text-red-600 font-bold" : ""}`
+                }
+              >
+                Latest
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/business"
+                className={({ isActive }) => 
+                  `text-gray-700 hover:text-red-600 roboto-medium ${isActive ? "text-red-600 font-bold" : ""}`
+                }
+              >
+                Business
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/technology"
+                className={({ isActive }) => 
+                  `text-gray-700 hover:text-red-600 roboto-medium ${isActive ? "text-red-600 font-bold" : ""}`
+                }
+              >
+                Technology
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/sport"
+                className={({ isActive }) => 
+                  `text-gray-700 hover:text-red-600 roboto-medium ${isActive ? "text-red-600 font-bold" : ""}`
+                }
+              >
+                Sport
+              </NavLink>
+            </li>
           </ul>
 
           <div className="flex items-center space-x-4">
@@ -97,10 +134,10 @@ const Navbar = () => {
           } w-full`}
         >
           <div className="flex flex-col space-y-4 py-5 px-4 sm:px-6 lg:px-8">
-            <a href="#" className="text-gray-700 hover:text-red-600">Latest</a>
-            <a href="#" className="text-gray-700 hover:text-red-600">Business</a>
-            <a href="#" className="text-gray-700 hover:text-red-600">Technology</a>
-            <a href="#" className="text-gray-700 hover:text-red-600">Sport</a>
+            <NavLink to="/" className="text-gray-700 hover:text-red-600">Latest</NavLink>
+            <NavLink to="/business" className="text-gray-700 hover:text-red-600">Business</NavLink>
+            <NavLink to="/technology" className="text-gray-700 hover:text-red-600">Technology</NavLink>
+            <NavLink to="/sport" className="text-gray-700 hover:text-red-600">Sport</NavLink>
             <div className="flex flex-col space-y-4">
               {currentUser ? (
                 <>
@@ -134,7 +171,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-      {/* Pane components */}
       <LoginPane isOpen={showLoginPane} onClose={toggleLoginPane} openSignUpPane={openSignUpPane} />
       <SignUpPane isOpen={showSignUpPane} onClose={closePanes} />
     </>

@@ -181,7 +181,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           </div>
 
           <div className="flex justify-between space-x-4 items-center mr-5 pb-2 news-metadata">
-            <div className="flex items-center space-x-1 ml-auto mr-3">
+            <div className="flex items-center space-x-1 ml-auto mr-3 pl-4">
               <img src={likedIcon} className="likeCount w-6" alt="liked Icon" />
               <p className="roboto-bold text-[#363434] text-xs sm:text-sm md:text-sm">
                 {likeCount}
