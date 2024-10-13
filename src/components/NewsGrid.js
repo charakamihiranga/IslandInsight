@@ -94,16 +94,18 @@ function NewsGrid() {
               <div
                 key={item.newsid}
                 className="news-card shadow-lg rounded-lg overflow-hidden transition duration-300 transform hover:scale-105 cursor-pointer"
-                onClick={() => handleCardClick({
-                  newsid: item.newsid,
-                  title: item.title,
-                  publishedDate: item.date.replace(/-/g, "/").split(" ")[0],
-                  readTime: getReadTime(item.postContent),
-                  imgLink: item.imgLink,
-                  agencyLogo: item.agencyLogo,
-                  postContent: item.postContent,
-                  publishedTime : getPublishedTime(item.date)
-                })}
+                onClick={() =>
+                  handleCardClick({
+                    newsid: item.newsid,
+                    title: item.title,
+                    publishedDate: item.date.replace(/-/g, "/").split(" ")[0],
+                    readTime: getReadTime(item.postContent),
+                    imgLink: item.imgLink,
+                    agencyLogo: item.agencyLogo,
+                    postContent: item.postContent,
+                    publishedTime: getPublishedTime(item.date),
+                  })
+                }
               >
                 <img
                   src={item.imgLink}
@@ -115,7 +117,10 @@ function NewsGrid() {
                   <div className="flex flex-col">
                     <div className="flex flex-row items-center space-x-2 mb-2">
                       <img
-                        src={item.agencyLogo}
+                        src={
+                          item.agencyLogo ||
+                          "https://esana.com.lk/assets/img/esena-logo.webp"
+                        }
                         alt="Agency Logo"
                         className="h-4 agency-logo object-cover"
                       />
@@ -130,7 +135,10 @@ function NewsGrid() {
                   </div>
                   <div className="flex flex-row items-center space-x-1 text-xs">
                     <p className="text-[#E51B21] roboto-bold">
-                      {item.date.replace(/-/g, "/").split(" ")[0]}
+                      {new Date(item.date)
+                        .toISOString()
+                        .slice(0, 10)
+                        .replace(/-/g, "/")}
                     </p>
                     <p className="text-gray-500">|</p>
                     <p className="text-[#363434] roboto-bold">

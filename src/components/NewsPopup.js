@@ -28,7 +28,6 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [commentCount, setCommentCount] = useState(0);
   const [comments, setComments] = useState([]);
   const [loginPaneOpen, setLoginPaneOpen] = useState(false);
-  
 
   const openLoginPane = () => setLoginPaneOpen(true);
   const closeLoginPane = () => setLoginPaneOpen(false);
@@ -140,7 +139,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
 
   // Handle post comment
   const handlePostComment = async () => {
-    if(!user){
+    if (!user) {
       openLoginPane();
       return;
     }
@@ -149,7 +148,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
         userId: user.uid,
         username: user.displayName || "User",
         comment,
-        userPhoto: user.photoURL ,
+        userPhoto: user.photoURL,
       });
       setComment("");
     } else {
@@ -236,12 +235,17 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           <div className="flex justify-between items-center px-4 mb-0 sm:mb-0 md:mb-2">
             <img
               className="popupAgencyLogo h-4 object-cover"
-              src={news?.agencyLogo}
+              src={news?.agencyLogo || "https://esana.com.lk/assets/img/esena-logo.webp"}
               alt="Agency Logo"
             />
             <div className="flex justify-end items-center space-x-2">
               <p className="text-[#E51B21] roboto-bold text-sm sm:text-xs md:text-sm">
-                {news?.publishedDate}
+                {news?.publishedDate
+                  ? new Date(news.publishedDate.replace(/\//g, "-"))
+                      .toISOString()
+                      .slice(0, 10)
+                      .replace(/-/g, "/")
+                  : ""}
               </p>
               <p className="text-gray-500 text-sm sm:text-xs md:text-sm">|</p>
               <p className="text-[#363434] roboto-bold text-sm sm:text-xs md:text-sm">

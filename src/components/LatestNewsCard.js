@@ -39,7 +39,6 @@ function LatestNewsCard() {
       }
     );
 
-    // Cleanup the listener on component unmount
     return () => unsubscribe();
   }, []);
 
@@ -62,9 +61,10 @@ function LatestNewsCard() {
     const words = content.split(" ");
     return Math.ceil(words.length / 200);
   };
-
+  
   const getNewsId = (link) => {
-    return link.split("/")[1];
+    const segments = link.split("/");
+    return segments[segments.length - 1];
   };
 
   const handleClick = (latestNews) => {
@@ -103,7 +103,10 @@ function LatestNewsCard() {
           <div className="w-full md:w-[45vw] p-4 flex flex-col justify-between">
             <div className="flex flex-row items-center space-x-2 mb-4">
               <img
-                src={latestNews.agencyLogo}
+                src={
+                  latestNews.agencyLogo ||
+                  "https://esana.com.lk/assets/img/esena-logo.webp"
+                }
                 alt="Agency Logo"
                 className="h-4 object-cover"
               />
@@ -121,7 +124,10 @@ function LatestNewsCard() {
             </p>
             <div className="flex flex-row items-center space-x-1 text-xs">
               <p className="text-[#E51B21] roboto-bold">
-                {latestNews.date.replace(/-/g, "/").split(" ")[0]}
+                {new Date(latestNews.date)
+                  .toISOString()
+                  .slice(0, 10)
+                  .replace(/-/g, "/")}
               </p>
               <p className="text-gray-500">|</p>
               <p className="text-[#363434] roboto-bold">
