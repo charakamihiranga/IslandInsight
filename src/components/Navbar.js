@@ -34,7 +34,10 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-    await logout(); // Call logout function from AuthContext
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      await logout(); // Call logout function from AuthContext
+    }
   };
 
   return (
@@ -95,6 +98,7 @@ const Navbar = () => {
                   src={currentUser?.photoURL && currentUser.photoURL !== "No" ? currentUser.photoURL : defaultUser}
                   alt="User profile"
                   className="w-10 h-10 md:w-8 md:h-8 rounded-full transition-transform duration-200 hover:scale-110 cursor-pointer"
+                  onClick={handleLogout} // Trigger logout confirmation on click
                 />
               </div>
             ) : (
@@ -141,12 +145,9 @@ const Navbar = () => {
             <div className="flex flex-col space-y-4">
               {currentUser ? (
                 <>
-                  <div className="text-gray-700 hover:text-red-600 cursor-pointer">
-                    My Profile
-                  </div>
                   <button
                     className="bg-red-600 font-Pacifico text-white text-xs roboto-bold py-2 px-4 rounded-lg hover:bg-red-800 transition-colors duration-300"
-                    onClick={handleLogout}
+                    onClick={handleLogout} 
                   >
                     LOGOUT
                   </button>
