@@ -40,7 +40,6 @@ const SignUpPane = ({ isOpen, onClose }) => {
   };
 
   const handleOpenLogin = () => {
-    
     setShowLoginPane(!showLoginPane);
   };
 

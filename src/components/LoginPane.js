@@ -4,19 +4,19 @@ import "./../assets/styles/general.css";
 import closeIcon from "./../assets/Close.png";
 import eyeIcon from "./../assets/eye.png";
 
+
 const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
   const [closing, setClosing] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
-
   const handleLogin = async () => {
     try {
       await login(email, password);
       handleClose(); 
     } catch (error) {
-      alert(error.message);
+
     }
   };
 
@@ -36,10 +36,10 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
     setClosing(true);
     setTimeout(() => {
       onClose();
-      setEmail("");      // Clear email field
-      setPassword("");   // Clear password field
+      setEmail("");      
+      setPassword("");   
       setClosing(false);
-    }, 300); // Adjust the timeout based on the duration of your closing animation
+    }, 300); 
   };
 
   if (!isOpen && !closing) return null;

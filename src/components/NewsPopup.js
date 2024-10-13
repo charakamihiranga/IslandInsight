@@ -9,6 +9,7 @@ import likedIcon from "./../assets/likedIcon.png";
 import sendIcon from "./../assets/send.png";
 import commentHeaderIcon from "./../assets/userComments.png";
 import dProfile from "./../assets/profile.png";
+import LoginPane from "./LoginPane";
 import {
   updateLikesInDb,
   postCommentToDb,
@@ -26,6 +27,11 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [comment, setComment] = useState("");
   const [commentCount, setCommentCount] = useState(0);
   const [comments, setComments] = useState([]);
+  const [loginPaneOpen, setLoginPaneOpen] = useState(false);
+  
+
+  const openLoginPane = () => setLoginPaneOpen(true);
+  const closeLoginPane = () => setLoginPaneOpen(false);
 
   // Handle share button clicked
   const handleShareClick = async () => {
@@ -100,6 +106,10 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
 
   // Function to check if the current user liked the news article
   const checkUserLiked = async () => {
+    if (!user || !user.uid) {
+      setLiked(false);
+      return;
+    }
     const isLiked = await checkIfLiked(news.newsid, user.uid); // Assuming this function returns true/false
     setLiked(isLiked);
   };
@@ -115,6 +125,10 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
 
   // Handle like button clicked
   const handleLikeClick = async () => {
+    if (!user || !user.uid) {
+      openLoginPane();
+      return;
+    }
     const newLikedStatus = !liked;
     setLiked(newLikedStatus);
     setLikeAnimation(true);
@@ -126,12 +140,16 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
 
   // Handle post comment
   const handlePostComment = async () => {
+    if(!user){
+      openLoginPane();
+      return;
+    }
     if (comment.trim()) {
       await postCommentToDb(news.newsid, {
         userId: user.uid,
         username: user.displayName || "User",
         comment,
-        userPhoto: user.photoURL,
+        userPhoto: user.photoURL ,
       });
       setComment("");
     } else {
@@ -288,7 +306,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
                     >
                       <img
                         className="commentUserPhoto w-8 h-8 rounded-full object-cover"
-                        src={comment.userPhoto || dProfile}
+                        src={comment.userId ? comment.userPhoto : dProfile}
                         alt="User"
                       />
                       <div className="bg-gray-200 py-2 pb-4 px-4 sm:px-6 sm:py-3 rounded-xl w-full">
@@ -323,7 +341,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           <img
             className="userPhoto h-8 w-8 rounded-full mr-4"
             alt="user"
-            src={user?.photoURL}
+            src={user?.uid ? user.photoURL : dProfile}
           />
           <input
             type="text"
@@ -341,6 +359,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           </button>
         </div>
       </div>
+      <LoginPane isOpen={loginPaneOpen} onClose={closeLoginPane} />
     </div>
   );
 };

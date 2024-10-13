@@ -6,6 +6,8 @@ import NewsGrid from "./components/NewsGrid";
 import { AuthProvider } from "./context/AuthContext";
 import SignUpPane from "./components/SignUpPane";
 import TechNewsGrid from "./components/TechNewsGrid";
+import BusinessNewsGrid from "./components/BusinessNewsGrid";
+import SportNewsGrid from "./components/SportNewsGrid";
 function App() {
   return (
     <React.StrictMode>
@@ -15,6 +17,8 @@ function App() {
           <Routes>
           <Route path="/" element={[<LatestNewsCard/>, <NewsGrid/>]} />
           <Route path="/technology" element={<TechNewsGrid/>} />
+          <Route path="/business" element={<BusinessNewsGrid/>} />
+          <Route path="/sport" element={<SportNewsGrid/>} />
           </Routes>
         </Router>
       </AuthProvider>
