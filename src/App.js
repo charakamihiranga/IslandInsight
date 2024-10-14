@@ -7,12 +7,16 @@ import { AuthProvider } from "./context/AuthContext";
 import TechNewsGrid from "./components/TechNewsGrid";
 import BusinessNewsGrid from "./components/BusinessNewsGrid";
 import SportNewsGrid from "./components/SportNewsGrid";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LogoutConfirmationToast from "./components/logOutConfirmationToast";
 function App() {
   return (
     <React.StrictMode>
       <AuthProvider>
         <Router>
-          <Navbar />
+          <ToastContainer />
+          <Navbar/>
           <Routes>
           <Route path="/" element={[<LatestNewsCard/>, <NewsGrid/>]} />
           <Route path="/technology" element={<TechNewsGrid/>} />

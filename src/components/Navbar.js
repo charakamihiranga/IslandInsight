@@ -4,7 +4,9 @@ import LoginPane from "./LoginPane";
 import SignUpPane from "./SignUpPane";
 import defaultUser from "./../assets/userProfile.png";
 import { NavLink } from "react-router-dom"; // Import NavLink from react-router-dom
-import './../assets/styles/general.css';
+import "./../assets/styles/general.css";
+import { toast } from "react-toastify";
+import LogoutConfirmationToast from "./logOutConfirmationToast";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,10 +36,30 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-    const confirmLogout = window.confirm("Are you sure you want to log out?");
-    if (confirmLogout) {
-      await logout(); // Call logout function from AuthContext
-    }
+    toast(
+      <LogoutConfirmationToast
+        onConfirm={async () => {
+          await logout(); // Call logout function
+          toast.success("You have logged out successfully.", {
+            position: "top-center",
+            theme: "light",
+          });
+        }}
+        onCancel={() => {
+          console.log("Logout canceled");
+          toast.dismiss(); 
+        }}
+      />,
+      {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: false,
+        hideProgressBar: true,
+        draggable: false,
+        toastId: "logout-toast", 
+        closeButton: false,
+      }
+    );
   };
 
   return (
@@ -52,8 +74,10 @@ const Navbar = () => {
             <li>
               <NavLink
                 to="/"
-                className={({ isActive }) => 
-                  `text-gray-700 hover:text-red-600 roboto-medium ${isActive ? "text-red-600 font-bold" : ""}`
+                className={({ isActive }) =>
+                  `text-gray-700 hover:text-red-600 roboto-medium ${
+                    isActive ? "text-red-600 font-bold" : ""
+                  }`
                 }
               >
                 Latest
@@ -62,8 +86,10 @@ const Navbar = () => {
             <li>
               <NavLink
                 to="/business"
-                className={({ isActive }) => 
-                  `text-gray-700 hover:text-red-600 roboto-medium ${isActive ? "text-red-600 font-bold" : ""}`
+                className={({ isActive }) =>
+                  `text-gray-700 hover:text-red-600 roboto-medium ${
+                    isActive ? "text-red-600 font-bold" : ""
+                  }`
                 }
               >
                 Business
@@ -72,8 +98,10 @@ const Navbar = () => {
             <li>
               <NavLink
                 to="/technology"
-                className={({ isActive }) => 
-                  `text-gray-700 hover:text-red-600 roboto-medium ${isActive ? "text-red-600 font-bold" : ""}`
+                className={({ isActive }) =>
+                  `text-gray-700 hover:text-red-600 roboto-medium ${
+                    isActive ? "text-red-600 font-bold" : ""
+                  }`
                 }
               >
                 Technology
@@ -82,8 +110,10 @@ const Navbar = () => {
             <li>
               <NavLink
                 to="/sport"
-                className={({ isActive }) => 
-                  `text-gray-700 hover:text-red-600 roboto-medium ${isActive ? "text-red-600 font-bold" : ""}`
+                className={({ isActive }) =>
+                  `text-gray-700 hover:text-red-600 roboto-medium ${
+                    isActive ? "text-red-600 font-bold" : ""
+                  }`
                 }
               >
                 Sport
@@ -95,7 +125,11 @@ const Navbar = () => {
             {currentUser ? (
               <div className="relative hidden md:flex">
                 <img
-                  src={currentUser?.photoURL && currentUser.photoURL !== "No" ? currentUser.photoURL : defaultUser}
+                  src={
+                    currentUser?.photoURL && currentUser.photoURL !== "No"
+                      ? currentUser.photoURL
+                      : defaultUser
+                  }
                   alt="User profile"
                   className="w-10 h-10 md:w-8 md:h-8 rounded-full transition-transform duration-200 hover:scale-110 cursor-pointer"
                   onClick={handleLogout} // Trigger logout confirmation on click
@@ -126,32 +160,50 @@ const Navbar = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+                  d={
+                    isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"
+                  }
                 />
               </svg>
             </button>
           </div>
         </div>
         <div
-          className={`md:hidden ${isOpen ? "block" : "hidden"} bg-white border-t border-gray-200 mt-6 transition-transform duration-500 ease-in-out transform ${
+          className={`md:hidden ${
+            isOpen ? "block" : "hidden"
+          } bg-white border-t border-gray-200 mt-6 transition-transform duration-500 ease-in-out transform ${
             isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
           } w-full`}
         >
           <div className="flex flex-col space-y-4 py-5 px-4 sm:px-6 lg:px-8">
-            <NavLink to="/" className="text-gray-700 hover:text-red-600">Latest</NavLink>
-            <NavLink to="/business" className="text-gray-700 hover:text-red-600">Business</NavLink>
-            <NavLink to="/technology" className="text-gray-700 hover:text-red-600">Technology</NavLink>
-            <NavLink to="/sport" className="text-gray-700 hover:text-red-600">Sport</NavLink>
+            <NavLink to="/" className="text-gray-700 hover:text-red-600">
+              Latest
+            </NavLink>
+            <NavLink
+              to="/business"
+              className="text-gray-700 hover:text-red-600"
+            >
+              Business
+            </NavLink>
+            <NavLink
+              to="/technology"
+              className="text-gray-700 hover:text-red-600"
+            >
+              Technology
+            </NavLink>
+            <NavLink to="/sport" className="text-gray-700 hover:text-red-600">
+              Sport
+            </NavLink>
             <div className="flex flex-col space-y-4">
               {currentUser ? (
                 <>
                   <button
                     className="bg-red-600 font-Pacifico text-white text-xs roboto-bold py-2 px-4 rounded-lg hover:bg-red-800 transition-colors duration-300"
-                    onClick={handleLogout} 
+                    onClick={handleLogout}
                   >
                     LOGOUT
                   </button>
-                </>       
+                </>
               ) : (
                 <>
                   <button
@@ -172,7 +224,11 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-      <LoginPane isOpen={showLoginPane} onClose={toggleLoginPane} openSignUpPane={openSignUpPane} />
+      <LoginPane
+        isOpen={showLoginPane}
+        onClose={toggleLoginPane}
+        openSignUpPane={openSignUpPane}
+      />
       <SignUpPane isOpen={showSignUpPane} onClose={closePanes} />
     </>
   );

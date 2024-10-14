@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import NewsPopup from "./NewsPopup";
 import "./../assets/styles/general.css";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 function BusinessNewsGrid() {
   const [news, setNews] = useState([]);
@@ -30,7 +31,7 @@ function BusinessNewsGrid() {
         }
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching business news:", error);
+        toast.error("Error fetching business news:", error);
         setLoading(false);
       }
     };

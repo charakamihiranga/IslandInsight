@@ -7,6 +7,7 @@ import appleLogo from "./../assets/Apple Logo.png";
 import facebookLogo from "./../assets/Facebook.png";
 import googleLogo from "./../assets/Google.png";
 import "./../assets/styles/general.css";
+import { toast } from "react-toastify";
 
 const SignUpPane = ({ isOpen, onClose }) => {
   const { signup, signInWithGoogle, signInWithFacebook, signInWithApple } =
@@ -31,15 +32,12 @@ const SignUpPane = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   const handleClose = () => {
+    clearForm();
     setClosing(true);
     setTimeout(() => {
       onClose();
       setClosing(false);
     }, 300);
-  };
-
-  const handleOpenLogin = () => {
-    setShowLoginPane(!showLoginPane);
   };
 
   const handleChange = (e) => {
@@ -54,7 +52,10 @@ const SignUpPane = ({ isOpen, onClose }) => {
     const { email, password, confirmPassword, name } = userInfo;
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!", {
+        position: 'top-center',
+        theme: 'light',
+      });    
       return;
     }
 
@@ -62,10 +63,17 @@ const SignUpPane = ({ isOpen, onClose }) => {
 
     try {
       await signup(email, password, name);
+      toast.success("Account created successfully!", {
+        position: 'top-center',
+        theme: 'light',
+      });
       clearForm();
       handleClose();
     } catch (error) {
-      alert("Error signing up: " + error.message);
+      toast.error("Error creating account: " + error.message, {
+        position: 'top-center',
+        theme: 'light',
+      });
     } finally {
       setIsVerifying(false);
     }
@@ -83,27 +91,48 @@ const SignUpPane = ({ isOpen, onClose }) => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
+      toast.success('Signed in successfully.', {
+        position: 'top-center',
+        theme: 'light',
+      });
       handleClose();
     } catch (error) {
-      alert("Error signing in with Google: " + error.message);
+      toast.error("Error signing in with Google: " + error.message, {
+        position: 'top-center',
+        theme: 'light',
+      });
     }
   };
 
   const handleFacebookSignIn = async () => {
     try {
       await signInWithFacebook();
+      toast.success('Signed in successfully.', {
+        position: 'top-center',
+        theme: 'light',
+      });
       handleClose();
     } catch (error) {
-      alert("Error signing in with Facebook: " + error.message);
+      toast.error("Error signing in with Facebook: " + error.message, {
+        position: 'top-center',
+        theme: 'light',
+      });
     }
   };
 
   const handleAppleSignIn = async () => {
     try {
       await signInWithApple();
+      toast.success('Signed in successfully.', {
+        position: 'top-center',
+        theme: 'light',
+      });
       handleClose();
     } catch (error) {
-      alert("Error signing in with Apple: " + error.message);
+      toast.error("Error signing in with Apple: " + error.message, {
+        position: 'top-center',
+        theme: 'light',
+      });
     }
   };
 

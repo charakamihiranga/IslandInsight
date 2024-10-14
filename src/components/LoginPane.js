@@ -3,9 +3,13 @@ import { useAuth } from "../context/AuthContext";
 import "./../assets/styles/general.css";
 import closeIcon from "./../assets/Close.png";
 import eyeIcon from "./../assets/eye.png";
+import { toast } from "react-toastify";
+import "./../assets/styles/toastStyle.css";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 
 const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
+  const auth = getAuth();
   const [closing, setClosing] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
@@ -14,11 +18,19 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
   const handleLogin = async () => {
     try {
       await login(email, password);
+      toast.success("Login successful!", {
+        position: 'top-center',
+        theme: 'light',
+      });
       handleClose(); 
     } catch (error) {
-
+      toast.error("Invalid credentials. Please try again.", {
+        position: 'top-center',
+        theme: 'light',
+      });
     }
   };
+
 
   const handleMouseDown = () => {
     setPasswordVisible(true);
@@ -41,6 +53,21 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
       setClosing(false);
     }, 300); 
   };
+
+  const handlePasswordReset = async () => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success('Password reset email sent! Check yout inbox', {
+        position: 'top-center',
+        theme: 'light',
+      });
+      } catch (error) {
+        toast.error('Failed to send password reset email. Please try again.', {
+          position: 'top-center',
+          theme: 'light',
+        });
+    }
+  }
 
   if (!isOpen && !closing) return null;
 
@@ -111,7 +138,8 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
             />
           </div>
           <div className="flex justify-end">
-            <p className="text-[10px] roboto-medium text-gray-700 cursor-pointer mt-2 hover:underline mr-6">
+            <p className="text-[10px] roboto-medium text-gray-700 cursor-pointer mt-2 hover:underline mr-6"
+            onClick={handlePasswordReset}>
               Forgot password?
             </p>
           </div>
@@ -121,14 +149,13 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
           >
             LOGIN
           </button>
-          <div className="mt-6 flex">
-            <div className="w-[8vw] mt-2 h-[1.5px] bg-[#716868]"></div>
-            <p className="roboto-bold text-xs text-gray-700 mx-3">
-              {" "}
-              To create an account
-            </p>
-            <div className="w-[8vw] mt-2 h-[1.5px] bg-[#716868]"></div>
-          </div>
+          <div className="mt-6 flex items-center justify-center">
+          <div className="w-[28%] mt-2 h-[1.5px] bg-[#716868]"></div>
+          <p className="roboto-bold text-xs text-gray-700 mx-3">
+            Or continue with
+          </p>
+          <div className="w-[28%] mt-2 h-[1.5px] bg-[#716868]"></div>
+        </div>
           <button
             className="w-full bg-[#D9D9D9] text-[#000] mb-4 roboto-bold text-xs p-2.5 rounded-3xl mt-4 cursor-pointer hover:bg-[#B0B0B0] hover:shadow-lg transition duration-300 ease-in-out"
             onClick={openSignUpPane}

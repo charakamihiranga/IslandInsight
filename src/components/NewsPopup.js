@@ -16,6 +16,7 @@ import {
   listenToLikes,
   listenToComments,
 } from "../configs/firestoreOperations";
+import { toast } from "react-toastify";
 
 const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [visible, setVisible] = useState(false);
@@ -44,12 +45,18 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
         window.open(shareUrl, "_blank");
       }
     } catch (error) {
-      console.error("Error sharing:", error);
+      toast.error("Error sharing news", {
+        position: "top-center",
+        theme: "light",
+      });
     }
   };
 
   const openLoginAlert = () => {
-    alert("Please log in to like or comment on this post.");
+    toast.warning("Please log in before liking or commenting.", {
+      position: "top-center",
+      theme: "light",
+    });
   };
 
   // Function to get the time difference from the current time

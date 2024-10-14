@@ -10,6 +10,7 @@ import { db } from "../configs/firebaseConfig";
 import "./../assets/styles/general.css";
 import { useAuth } from "../context/AuthContext";
 import NewsPopup from "./NewsPopup";
+import { toast } from "react-toastify";
 
 function LatestNewsCard() {
   const [latestNews, setLatestNews] = useState(null);
@@ -34,7 +35,10 @@ function LatestNewsCard() {
         }
       },
       (error) => {
-        console.error("Error fetching latest news:", error);
+        toast.error("Error fetching latest news", {
+          position: "top-center",
+          theme: "light",
+        });
       }
     );
 
