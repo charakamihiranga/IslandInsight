@@ -9,7 +9,6 @@ import likedIcon from "./../assets/likedIcon.png";
 import sendIcon from "./../assets/send.png";
 import commentHeaderIcon from "./../assets/userComments.png";
 import dProfile from "./../assets/profile.png";
-import LoginPane from "./LoginPane";
 import {
   updateLikesInDb,
   postCommentToDb,
@@ -27,10 +26,6 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   const [comment, setComment] = useState("");
   const [commentCount, setCommentCount] = useState(0);
   const [comments, setComments] = useState([]);
-  const [loginPaneOpen, setLoginPaneOpen] = useState(false);
-
-  const openLoginPane = () => setLoginPaneOpen(true);
-  const closeLoginPane = () => setLoginPaneOpen(false);
 
   // Handle share button clicked
   const handleShareClick = async () => {
@@ -51,6 +46,10 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
     } catch (error) {
       console.error("Error sharing:", error);
     }
+  };
+
+  const openLoginAlert = () => {
+    alert("Please log in to like or comment on this post.");
   };
 
   // Function to get the time difference from the current time
@@ -125,7 +124,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   // Handle like button clicked
   const handleLikeClick = async () => {
     if (!user || !user.uid) {
-      openLoginPane();
+      openLoginAlert();
       return;
     }
     const newLikedStatus = !liked;
@@ -140,7 +139,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
   // Handle post comment
   const handlePostComment = async () => {
     if (!user) {
-      openLoginPane();
+      openLoginAlert();
       return;
     }
     if (comment.trim()) {
@@ -343,7 +342,7 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
 
         <div className="bg-[#E51B21] rounded-t-2xl w-full h-[9vh] absolute bottom-0 right-0 flex items-center justify-between px-6">
           <img
-            className="userPhoto h-8 w-8 rounded-full mr-4"
+            className="userPhoto h-8 w-8 rounded-full mr-4 object-cover"
             alt="user"
             src={user?.uid ? user.photoURL : dProfile}
           />
@@ -363,7 +362,6 @@ const NewsPopup = ({ isOpen, onClose, news, user }) => {
           </button>
         </div>
       </div>
-      <LoginPane isOpen={loginPaneOpen} onClose={closeLoginPane} />
     </div>
   );
 };

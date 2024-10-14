@@ -148,6 +148,7 @@ function NewsGrid() {
                 </div>
               </div>
             ))}
+
       </div>
       {isNewsPopupOpen && selectedNews && (
         <NewsPopup

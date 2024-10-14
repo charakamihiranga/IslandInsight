@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LatestNewsCard from "./components/LatestNewsCard";
 import NewsGrid from "./components/NewsGrid";
 import { AuthProvider } from "./context/AuthContext";
-import SignUpPane from "./components/SignUpPane";
 import TechNewsGrid from "./components/TechNewsGrid";
 import BusinessNewsGrid from "./components/BusinessNewsGrid";
 import SportNewsGrid from "./components/SportNewsGrid";

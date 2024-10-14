@@ -5,7 +5,6 @@ import {
   query,
   limitToLast,
   orderByKey,
-  set,
 } from "firebase/database";
 import { db } from "../configs/firebaseConfig";
 import "./../assets/styles/general.css";

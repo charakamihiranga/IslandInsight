@@ -260,6 +260,12 @@
     padding-left: 0px;
   }
 
+  .eyeicon{
+    object-fit: cover;
+    width: 20px !important;
+    margin-left: 2rem;
+  }
+
 }
 
 

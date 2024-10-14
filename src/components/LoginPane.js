@@ -105,7 +105,7 @@ const LoginPane = ({ isOpen, onClose, openSignUpPane }) => {
             <img
               src={eyeIcon}
               alt="Toggle visibility"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer h-4 mr-2"
+              className="eyeicon absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer h-4 mr-2"
               onMouseDown={handleMouseDown}
               onMouseUp={handleMouseUp}
             />
