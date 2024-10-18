@@ -45,4 +45,4 @@ For any inquiries or feedback, please reach out:
 ![Screenshot 2024-10-18 200747](https://github.com/user-attachments/assets/e37e76eb-00ba-4976-b18d-3f1f07f489c5)
 
 ## Live Demo
-🌐 Check out the live demo of the application: [Live Demo](https://se10login.firebaseapp.com/)
+🌐 Check out the live demo of the application: [Island Insight](https://se10login.firebaseapp.com/)
