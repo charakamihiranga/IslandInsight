@@ -43,6 +43,11 @@ For any inquiries or feedback, please reach out:
 
 ## Screenshots
 ![Screenshot 2024-10-18 200747](https://github.com/user-attachments/assets/e37e76eb-00ba-4976-b18d-3f1f07f489c5)
+![Screenshot 2024-10-18 200839](https://github.com/user-attachments/assets/a50ef108-af21-408d-a023-53034aff9cac)
+![Screenshot 2024-10-18 200854](https://github.com/user-attachments/assets/9c2e979b-271f-478d-a228-cbf943c7a29e)
+![Screenshot 2024-10-18 200912](https://github.com/user-attachments/assets/45c3554d-8ccc-4977-8ee5-167bacce1b79)
+
+
 
 ## Live Demo
 🌐 Check out the live demo of the application: [Island Insight](https://se10login.firebaseapp.com/)
