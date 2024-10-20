@@ -32,18 +32,39 @@ function NewsGrid() {
     });
   }, []);
 
-  const getPublishedTime = (dateTime) => {
-    const publishedDateTime = new Date(dateTime);
+  const getPublishedTime = (scrapedDate, time) => {
+    const publishedDateTime = new Date(scrapedDate);
     const now = new Date();
-
     const diffMs = now - publishedDateTime;
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMins / 60);
+    const totalDiffMins = Math.floor(diffMs / (1000 * 60));
+    const normalizedTime = time.trim().toLowerCase();
+    let additionalMins = 0;
 
-    if (diffHours > 0)
-      return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-    if (diffMins > 0) return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
-    return "Just now";
+    const extractTimeValue = (regex) => {
+      const match = normalizedTime.match(regex);
+      return match ? parseInt(match[1], 10) : 0;
+    };
+
+    if (normalizedTime === "yesterday") {
+      additionalMins = 24 * 60;
+    } else {
+      additionalMins += extractTimeValue(/(\d+)\s+day[s]?/) * 24 * 60;
+      additionalMins += extractTimeValue(/(\d+)\s+hour[s]?/) * 60;
+      additionalMins += extractTimeValue(/(\d+)\s+minute[s]?/);
+    }
+
+    const finalMins = totalDiffMins + additionalMins;
+
+    if (finalMins < 1) return "Just now";
+    if (finalMins < 60)
+      return `${finalMins} minute${finalMins > 1 ? "s" : ""} ago`;
+
+    const finalHours = Math.floor(finalMins / 60);
+    if (finalHours < 24)
+      return `${finalHours} hour${finalHours > 1 ? "s" : ""} ago`;
+
+    const finalDays = Math.floor(finalHours / 24);
+    return `${finalDays} day${finalDays > 1 ? "s" : ""} ago`;
   };
 
   const getReadTime = (content) => {
@@ -103,7 +124,7 @@ function NewsGrid() {
                     imgLink: item.imgLink,
                     agencyLogo: item.agencyLogo,
                     postContent: item.postContent,
-                    publishedTime: getPublishedTime(item.date),
+                    publishedTime: getPublishedTime(item.date, item.time),
                   })
                 }
               >
@@ -125,7 +146,7 @@ function NewsGrid() {
                         className="h-4 agency-logo object-cover"
                       />
                       <p className="text-xs text-black roboto-regular">
-                        {getPublishedTime(item.date)}
+                        {getPublishedTime(item.date, item.time)}
                       </p>
                     </div>
 
@@ -148,7 +169,6 @@ function NewsGrid() {
                 </div>
               </div>
             ))}
-
       </div>
       {isNewsPopupOpen && selectedNews && (
         <NewsPopup
