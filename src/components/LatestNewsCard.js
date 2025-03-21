@@ -102,7 +102,7 @@ function LatestNewsCard() {
   };
 
   return (
-    <div className="mx-4 sm:mx-8 md:mx-12 lg:mx-24 xl:mx-48 rounded-xl flex flex-col items-center justify-center p-4 my-10 transition-shadow duration-300 shadow-lg cursor-pointer">
+    <div className="mx-4 sm:mx-8 md:mx-12 lg:mx-24 xl:mx-72 rounded-xl flex flex-col items-center justify-center p-4 my-10 transition-shadow duration-300 shadow-lg cursor-pointer">
       {latestNews ? (
         <div
           className="flex flex-col md:flex-row items-stretch w-full max-w-[1200px] mx-auto"
