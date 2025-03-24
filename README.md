@@ -50,4 +50,4 @@ For any inquiries or feedback, please reach out:
 
 
 ## Live Demo
-🌐 Check out the live demo of the application: [Island Insight](https://se10login.firebaseapp.com/)
+🌐 Check out the live demo of the application: [Island Insight](https://islandinsight-5cabe.web.app)
